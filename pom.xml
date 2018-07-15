@@ -59,20 +59,20 @@
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-		 
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.24</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.24</version>
 			<scope>test</scope>
 		</dependency>
-		 
+
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
@@ -165,7 +165,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>clirr-maven-plugin</artifactId>
-				<executions> 
+				<executions>
 					<execution>
 						<id>check-compatibility</id>
 						<goals>
@@ -176,7 +176,7 @@
 				<configuration>
 					<ignored>
 						<difference>
-							<!-- seems to be a clirr bug that it cannot handle the different inherited 
+							<!-- seems to be a clirr bug that it cannot handle the different inherited
 								return types -->
 							<className>**</className>
 							<differenceType>7006</differenceType>
@@ -338,20 +338,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>1.8</version>
@@ -381,7 +367,7 @@
 						<groupId>org.codehaus.mojo.signature</groupId>
 						<artifactId>java17</artifactId>
 						<version>1.0</version>
-					</signature>	
+					</signature>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -472,6 +458,19 @@
 			<id>sign</id>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-jarsigner-plugin</artifactId>
