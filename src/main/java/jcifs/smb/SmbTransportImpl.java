@@ -1379,8 +1379,9 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
             throw new SmbAuthException(resp.getErrorCode());
         case NtStatus.NT_STATUS_MORE_PROCESSING_REQUIRED:
             break; /* normal for SPNEGO */
-        case 0x10B: // NT_STATUS_NOTIFY_CLEANUP
-        case 0x10C:
+        case 0x10B: // NT_STATUS_NOTIFY_CLEANUP:
+        case NtStatus.NT_STATUS_NOTIFY_ENUM_DIR:
+        case NtStatus.NT_STATUS_BUFFER_OVERFLOW:
             break;
         case NtStatus.NT_STATUS_PATH_NOT_COVERED:
             if ( ! ( req instanceof RequestWithPath ) ) {
