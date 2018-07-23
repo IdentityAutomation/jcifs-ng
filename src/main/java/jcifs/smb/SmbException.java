@@ -55,14 +55,18 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
 
     static {
         Map<Integer, String> errorCodeMessagesTmp = new HashMap<>();
-        for (int i = 0; i < NtStatus.NT_STATUS_CODES.length; i++) {
-            errorCodeMessagesTmp.put(NtStatus.NT_STATUS_CODES[i], NtStatus.NT_STATUS_MESSAGES[i]);
+        for (int i = 0; i < NT_STATUS_CODES.length; i++) {
+            errorCodeMessagesTmp.put(NT_STATUS_CODES[i], NT_STATUS_MESSAGES[i]);
         }
 
         Map<Integer, Integer> dosErrorCodeStatusesTmp = new HashMap<>();
-        for (int i = 0; i < DosError.DOS_ERROR_CODES.length; i++) {
-            errorCodeMessagesTmp.put(DosError.DOS_ERROR_CODES[i][0], DosError.DOS_ERROR_MESSAGES[i]);
-            dosErrorCodeStatusesTmp.put(DosError.DOS_ERROR_CODES[i][0], DosError.DOS_ERROR_CODES[i][1]);
+        for (int i = 0; i < DOS_ERROR_CODES.length; i++) {
+            dosErrorCodeStatusesTmp.put(DOS_ERROR_CODES[i][0], DOS_ERROR_CODES[i][1]);
+            int mappedNtCode = DOS_ERROR_CODES[i][1];
+            String mappedNtMessage = errorCodeMessagesTmp.get(mappedNtCode);
+            if (mappedNtMessage != null) {
+                errorCodeMessagesTmp.put(DOS_ERROR_CODES[i][0], mappedNtMessage);
+            }
         }
         
         // for backward compatibility since this is was different message in the NtStatus.NT_STATUS_CODES than returned
@@ -73,8 +77,8 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
         dosErrorCodeStatuses = Collections.unmodifiableMap(dosErrorCodeStatusesTmp);
 
         Map<Integer, String> winErrorCodeMessagesTmp = new HashMap<>();
-        for (int i = 0; i < NtStatus.NT_STATUS_CODES.length; i++) {
-            winErrorCodeMessagesTmp.put(WinError.WINERR_CODES[i], WinError.WINERR_MESSAGES[i]);
+        for (int i = 0; i < WINERR_CODES.length; i++) {
+            winErrorCodeMessagesTmp.put(WINERR_CODES[i], WINERR_MESSAGES[i]);
         }
 
         winErrorCodeMessages = Collections.unmodifiableMap(winErrorCodeMessagesTmp);
