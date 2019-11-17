@@ -25,7 +25,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Map;
@@ -227,9 +229,13 @@ public class SessionTest extends BaseCIFSTest {
 
     // #46
     @Test
-    public void testCredentialURLs () throws MalformedURLException, SmbException {
+    public void testCredentialURLs () throws MalformedURLException, SmbException, UnsupportedEncodingException {
         testCredentialUrl(
-            String.format("smb://%s:%s@%s/%s/doesnotexist", getTestUser(), getTestUserPassword(), getTestServer(), getTestShare()),
+            String.format("smb://%s:%s@%s/%s/doesnotexist",
+                    URLEncoder.encode(getTestUser(), "UTF-8"),
+                    URLEncoder.encode(getTestUserPassword(), "UTF-8"),
+                    getTestServer(),
+                    getTestShare()),
             getTestUser(),
             getTestUserPassword(),
             null);
@@ -239,8 +245,8 @@ public class SessionTest extends BaseCIFSTest {
                 String.format(
                     "smb://%s;%s:%s@%s/%s/doesnotexist",
                     getTestUserDomain(),
-                    getTestUser(),
-                    getTestUserPassword(),
+                    URLEncoder.encode(getTestUser(), "UTF-8"),
+                    URLEncoder.encode(getTestUserPassword(), "UTF-8"),
                     getTestServer(),
                     getTestShare()),
                 getTestUser(),
