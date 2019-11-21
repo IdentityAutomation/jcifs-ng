@@ -86,7 +86,7 @@ public class SidTest extends BaseCIFSTest {
         for ( int rid : rids ) {
             SID sid = new SID(domsid, rid);
             sid.resolve(getRequiredProperty(TestProperties.TEST_DOMAIN_DC), withTestNTLMCredentials(getContext()));
-            assertEquals(getRequiredProperty(TestProperties.TEST_DOMAIN_SHORT), sid.getDomainName());
+            assertEquals(getRequiredProperty(TestProperties.TEST_DOMAIN_SHORT.toLowerCase()), sid.getDomainName().toLowerCase());
             assertEquals(jcifs.SID.SID_TYPE_USER, sid.getType());
         }
     }
@@ -101,7 +101,7 @@ public class SidTest extends BaseCIFSTest {
         for ( int rid : rids ) {
             SID sid = new SID(domsid, rid);
             sid.resolve(getRequiredProperty(TestProperties.TEST_DOMAIN_DC), withTestNTLMCredentials(getContext()));
-            assertEquals(getRequiredProperty(TestProperties.TEST_DOMAIN_SHORT), sid.getDomainName());
+            assertEquals(getRequiredProperty(TestProperties.TEST_DOMAIN_SHORT).toLowerCase(), sid.getDomainName().toLowerCase());
             assertEquals(jcifs.SID.SID_TYPE_DOM_GRP, sid.getType());
         }
     }

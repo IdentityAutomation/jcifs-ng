@@ -7,9 +7,11 @@ Latest stable release:
 <dependency>
     <groupId>eu.agno3.jcifs</groupId>
     <artifactId>jcifs-ng</artifactId>
-    <version>2.0.6</version>
+    <version>2.1.3</version>
 </dependency>
 ```
+
+The 2.0 series is now discontinued.
 
 ### Changes
 
@@ -115,5 +117,13 @@ replace it with
 
 ```
 SingletonContext.getInstance().withCredentials(ntlmPasswordAuthentication)
+```
+
+### Building from sources
+
+Run the following to install the newest master version into your local `~/.m2/repository`:
+
+```bash
+mvn -C clean install -DskipTests -Dmaven.javadoc.skip=true -Dgpg.skip=true
 ```
 

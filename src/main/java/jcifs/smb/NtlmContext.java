@@ -115,11 +115,14 @@ public class NtlmContext implements SSPContext {
         if ( !auth.isAnonymous() ) {
             this.ntlmsspFlags |= NtlmFlags.NTLMSSP_NEGOTIATE_SIGN | NtlmFlags.NTLMSSP_NEGOTIATE_ALWAYS_SIGN | NtlmFlags.NTLMSSP_NEGOTIATE_KEY_EXCH;
         }
+        else if ( auth.isGuest() ) {
+            this.ntlmsspFlags |= NtlmFlags.NTLMSSP_NEGOTIATE_KEY_EXCH;
+        }
         else {
             this.ntlmsspFlags |= NtlmFlags.NTLMSSP_NEGOTIATE_ANONYMOUS;
         }
         this.requireKeyExchange = doSigning;
-        this.workstation = tc.getNameServiceClient().getLocalHost().getHostName();
+        this.workstation = tc.getConfig().getNetbiosHostname();
     }
 
 
@@ -144,14 +147,14 @@ public class NtlmContext implements SSPContext {
             ret += "null";
         }
         else {
-            ret += Hexdump.toHexString(this.serverChallenge, 0, this.serverChallenge.length * 2);
+            ret += Hexdump.toHexString(this.serverChallenge);
         }
         ret += ",signingKey=";
         if ( this.masterKey == null ) {
             ret += "null";
         }
         else {
-            ret += Hexdump.toHexString(this.masterKey, 0, this.masterKey.length * 2);
+            ret += Hexdump.toHexString(this.masterKey);
         }
         ret += "]";
         return ret;
@@ -246,21 +249,18 @@ public class NtlmContext implements SSPContext {
 
             if ( log.isTraceEnabled() ) {
                 log.trace(msg2.toString());
-                log.trace(Hexdump.toHexString(token, 0, token.length));
+                log.trace(Hexdump.toHexString(token));
             }
 
             this.serverChallenge = msg2.getChallenge();
 
             if ( this.requireKeyExchange ) {
-                if ( !this.transportContext.getConfig().isEnforceSpnegoIntegrity() && ( !msg2.getFlag(NtlmFlags.NTLMSSP_NEGOTIATE_KEY_EXCH)
+                if ( this.transportContext.getConfig().isEnforceSpnegoIntegrity() && ( !msg2.getFlag(NtlmFlags.NTLMSSP_NEGOTIATE_KEY_EXCH)
                         || !msg2.getFlag(NtlmFlags.NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY) ) ) {
                     throw new SmbUnsupportedOperationException("Server does not support extended NTLMv2 key exchange");
                 }
 
-                if ( !msg2.getFlag(NtlmFlags.NTLMSSP_NEGOTIATE_SIGN) ) {
-                    throw new SmbUnsupportedOperationException("Server does not support basic NTLM signature key exchange");
-                }
-                else if ( !msg2.getFlag(NtlmFlags.NTLMSSP_NEGOTIATE_128) ) {
+                if ( !msg2.getFlag(NtlmFlags.NTLMSSP_NEGOTIATE_128) ) {
                     throw new SmbUnsupportedOperationException("Server does not support 128-bit keys");
                 }
             }
@@ -271,11 +271,12 @@ public class NtlmContext implements SSPContext {
                 this.transportContext,
                 msg2,
                 this.targetName,
-                this.auth.getPassword(),
-                this.auth.getUserDomain(),
-                this.auth.getUsername(),
+                this.auth.isGuest() ? "invalid" : this.auth.getPassword(),
+                this.auth.isGuest() ? null : this.auth.getUserDomain(),
+                this.auth.isGuest() ? "GUEST" : this.auth.getUsername(),
                 this.workstation,
-                this.ntlmsspFlags);
+                this.ntlmsspFlags,
+                !this.auth.isAnonymous());
 
             msg3.setupMIC(this.type1Bytes, token);
 
@@ -283,14 +284,13 @@ public class NtlmContext implements SSPContext {
 
             if ( log.isTraceEnabled() ) {
                 log.trace(msg3.toString());
-                log.trace(Hexdump.toHexString(token, 0, token.length));
+                log.trace(Hexdump.toHexString(token));
             }
-            if ( ( this.ntlmsspFlags & NtlmFlags.NTLMSSP_NEGOTIATE_SIGN ) != 0 ) {
-                this.masterKey = msg3.getMasterKey();
 
-                if ( ( this.ntlmsspFlags & NtlmFlags.NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY ) != 0 ) {
-                    initSessionSecurity(msg3.getMasterKey());
-                }
+            this.masterKey = msg3.getMasterKey();
+
+            if ( this.masterKey != null && ( this.ntlmsspFlags & NtlmFlags.NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY ) != 0 ) {
+                initSessionSecurity(msg3.getMasterKey());
             }
 
             this.isEstablished = true;
@@ -313,7 +313,7 @@ public class NtlmContext implements SSPContext {
 
         if ( log.isTraceEnabled() ) {
             log.trace(msg1.toString());
-            log.trace(Hexdump.toHexString(out, 0, out.length));
+            log.trace(Hexdump.toHexString(out));
         }
 
         this.state++;

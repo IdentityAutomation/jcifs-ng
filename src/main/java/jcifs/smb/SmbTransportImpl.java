@@ -1,17 +1,17 @@
 /* jcifs smb client library in Java
  * Copyright (C) 2005  "Michael B. Allen" <jcifs at samba dot org>
  *                  "Eric Glass" <jcifs at samba dot org>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -80,7 +80,9 @@ import jcifs.internal.smb2.ServerMessageBlock2;
 import jcifs.internal.smb2.ServerMessageBlock2Request;
 import jcifs.internal.smb2.ServerMessageBlock2Response;
 import jcifs.internal.smb2.Smb2Constants;
+import jcifs.internal.smb2.io.Smb2ReadResponse;
 import jcifs.internal.smb2.ioctl.Smb2IoctlRequest;
+import jcifs.internal.smb2.ioctl.Smb2IoctlResponse;
 import jcifs.internal.smb2.lock.Smb2OplockBreakNotification;
 import jcifs.internal.smb2.nego.EncryptionNegotiateContext;
 import jcifs.internal.smb2.nego.Smb2NegotiateRequest;
@@ -99,7 +101,7 @@ import jcifs.util.transport.TransportException;
 
 
 /**
- * 
+ *
  */
 class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbConstants {
 
@@ -178,7 +180,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
 
 
     /**
-     * 
+     *
      * @return number of sessions on this transport
      */
     public int getNumSessions () {
@@ -225,7 +227,11 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
         catch ( IOException ioe ) {
             throw new SmbException(ioe.getMessage(), ioe);
         }
-        return this.negotiated;
+        SmbNegotiationResponse r = this.negotiated;
+        if ( r == null ) {
+            throw new SmbException("Connection did not complete, failed to get negotiation response");
+        }
+        return r;
     }
 
 
@@ -326,7 +332,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
 
 
     /**
-     * 
+     *
      * @param tf
      * @return a session for the context
      */
@@ -337,7 +343,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
 
 
     /**
-     * 
+     *
      * @param tf
      *            context to use
      * @return a session for the context
@@ -492,6 +498,10 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
                 this.in = this.socket.getInputStream();
             }
 
+            if ( this.credits.drainPermits() == 0 ) {
+                log.debug("It appears we previously lost some credits");
+            }
+
             if ( this.smb2 || this.getContext().getConfig().isUseSMB2OnlyNegotiation() ) {
                 log.debug("Using SMB2 only negotiation");
                 return negotiate2(null);
@@ -520,13 +530,29 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
                 Smb2NegotiateResponse r = new Smb2NegotiateResponse(getContext().getConfig());
                 r.decode(this.sbuf, 4);
                 r.received();
-                if ( r.getDialectRevision() != Smb2Constants.SMB2_DIALECT_ANY && r.getDialectRevision() != Smb2Constants.SMB2_DIALECT_0202 ) {
+
+                if ( r.getDialectRevision() == Smb2Constants.SMB2_DIALECT_ANY ) {
+                    return negotiate2(r);
+                }
+                else if ( r.getDialectRevision() != Smb2Constants.SMB2_DIALECT_0202 ) {
                     throw new CIFSException("Server returned invalid dialect verison in multi protocol negotiation");
                 }
-                return negotiate2(r);
+
+                int permits = r.getInitialCredits();
+                if ( permits > 0 ) {
+                    this.credits.release(permits);
+                }
+                Arrays.fill(this.sbuf, (byte) 0);
+                return new SmbNegotiation(
+                    new Smb2NegotiateRequest(
+                        getContext().getConfig(),
+                        this.signingEnforced ? Smb2Constants.SMB2_NEGOTIATE_SIGNING_REQUIRED : Smb2Constants.SMB2_NEGOTIATE_SIGNING_ENABLED),
+                    r,
+                    null,
+                    null);
             }
 
-            int permits = resp.getInitialCredits() - 1;
+            int permits = resp.getInitialCredits();
             if ( permits > 0 ) {
                 this.credits.release(permits);
             }
@@ -605,10 +631,6 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
 
         // further negotiation needed
         Smb2NegotiateRequest smb2neg = new Smb2NegotiateRequest(getContext().getConfig(), securityMode);
-
-        if ( this.credits.drainPermits() == 0 ) {
-            throw new IOException("No credits for negotiate");
-        }
         Smb2NegotiateResponse r = null;
         byte[] negoReqBuffer = null;
         byte[] negoRespBuffer = null;
@@ -655,7 +677,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
 
     /**
      * Connect the transport
-     * 
+     *
      * @throws SmbException
      */
     @Override
@@ -950,7 +972,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
 
                     try {
                         long timeout = getResponseTimeout(chain);
-                        if ( !params.contains(RequestParam.NO_TIMEOUT) ) {
+                        if ( params.contains(RequestParam.NO_TIMEOUT) ) {
                             this.credits.acquire(cost);
                         }
                         else {
@@ -971,7 +993,9 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
                         break;
                     }
                     catch ( InterruptedException e ) {
-                        throw new InterruptedIOException("Failed to acquire credits, exzessive parallelism?");
+                        InterruptedIOException ie = new InterruptedIOException("Interrupted while acquiring credits");
+                        ie.initCause(e);
+                        throw ie;
                     }
                 }
                 else {
@@ -1170,6 +1194,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
             System.arraycopy(this.sbuf, 4, buffer, 0, Smb2Constants.SMB2_HEADER_LENGTH);
             readn(this.in, buffer, Smb2Constants.SMB2_HEADER_LENGTH, rl - Smb2Constants.SMB2_HEADER_LENGTH);
 
+            cur.setReadSize(rl);
             int len = cur.decode(buffer, 0);
 
             if ( len > rl ) {
@@ -1203,6 +1228,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
                     log.debug(String.format("Compound next command %d read size %d remain %d", nextCommand, rl, size));
                 }
 
+                cur.setReadSize(rl);
                 readn(this.in, buffer, Smb2Constants.SMB2_HEADER_LENGTH, rl - Smb2Constants.SMB2_HEADER_LENGTH);
 
                 len = cur.decode(buffer, 0, true);
@@ -1235,7 +1261,8 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
                 throw new IOException("Invalid payload size: " + size);
             }
             int errorCode = Encdec.dec_uint32le(buffer, 9) & 0xFFFFFFFF;
-            if ( resp.getCommand() == ServerMessageBlock.SMB_COM_READ_ANDX && ( errorCode == 0 || errorCode == 0x80000005 ) ) {
+            if ( resp.getCommand() == ServerMessageBlock.SMB_COM_READ_ANDX
+                    && ( errorCode == 0 || errorCode == NtStatus.NT_STATUS_BUFFER_OVERFLOW ) ) {
                 // overflow indicator normal for pipe
                 SmbComReadAndXResponse r = (SmbComReadAndXResponse) resp;
                 int off = SMB1_HEADER_LENGTH;
@@ -1357,7 +1384,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
             // samba fails to report the proper status for some operations
         case 0xC00000A2: // NT_STATUS_MEDIA_WRITE_PROTECTED
             checkReferral(resp, req.getPath(), req);
-        case 0x80000005: /* STATUS_BUFFER_OVERFLOW */
+        case NtStatus.NT_STATUS_BUFFER_OVERFLOW:
             break; /* normal for DCERPC named pipes */
         case NtStatus.NT_STATUS_MORE_PROCESSING_REQUIRED:
             break; /* normal for NTLMSSP */
@@ -1383,6 +1410,7 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
         boolean cont = false;
         switch ( resp.getErrorCode() ) {
         case NtStatus.NT_STATUS_OK:
+        case NtStatus.NT_STATUS_NO_MORE_FILES:
             cont = true;
             break;
         case NtStatus.NT_STATUS_PENDING:
@@ -1404,7 +1432,6 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
             break; /* normal for SPNEGO */
         case 0x10B: // NT_STATUS_NOTIFY_CLEANUP:
         case NtStatus.NT_STATUS_NOTIFY_ENUM_DIR:
-        case NtStatus.NT_STATUS_BUFFER_OVERFLOW:
             break;
         case 0xC00000BB: // NT_STATUS_NOT_SUPPORTED
             throw new SmbUnsupportedOperationException();
@@ -1414,6 +1441,19 @@ class SmbTransportImpl extends Transport implements SmbTransportInternal, SmbCon
             }
             String path = ( (RequestWithPath) req ).getFullUNCPath();
             checkReferral(resp, path, ( (RequestWithPath) req ));
+            // checkReferral always throws and exception but put break here for clarity
+            break;
+        case NtStatus.NT_STATUS_BUFFER_OVERFLOW:
+            if ( resp instanceof Smb2ReadResponse ) {
+                break;
+            }
+            if ( resp instanceof Smb2IoctlResponse ) {
+                int ctlCode = ( (Smb2IoctlResponse) resp ).getCtlCode();
+                if ( ctlCode == Smb2IoctlRequest.FSCTL_PIPE_TRANSCEIVE || ctlCode == Smb2IoctlRequest.FSCTL_PIPE_PEEK ) {
+                    break;
+                }
+            }
+            // fall through
         default:
             if ( log.isDebugEnabled() ) {
                 log.debug("Error code: 0x" + Hexdump.toHexString(resp.getErrorCode(), 8) + " for " + req.getClass().getSimpleName());

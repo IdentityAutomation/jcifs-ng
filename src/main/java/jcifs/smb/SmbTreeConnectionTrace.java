@@ -1,5 +1,5 @@
 /*
- * © 2017 AgNO3 Gmbh & Co. KG
+ * © 2019 AgNO3 Gmbh & Co. KG
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,51 +15,30 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package jcifs;
+package jcifs.smb;
+
+
+import jcifs.CIFSContext;
 
 
 /**
  * @author mbechler
  *
  */
-public class EmptyIterator implements CloseableIterator<SmbResource> {
+class SmbTreeConnectionTrace extends SmbTreeConnection {
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see java.util.Iterator#hasNext()
-     */
-    @Override
-    public boolean hasNext () {
-        return false;
+    SmbTreeConnectionTrace ( CIFSContext ctx ) {
+        super(ctx);
     }
 
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see java.util.Iterator#next()
-     */
-    @Override
-    public SmbResource next () {
-        return null;
+    SmbTreeConnectionTrace ( SmbTreeConnection conn ) {
+        super(conn);
     }
 
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see jcifs.CloseableIterator#close()
-     */
     @Override
-    public void close () throws CIFSException {}
-
-    /**
-     * {@inheritDoc}
-     *
-     * @see jcifs.CloseableIterator#remove()
-     */
-    @Override
-    public void remove() {
+    protected void finalize () throws Throwable {
+        checkRelease();
     }
 }

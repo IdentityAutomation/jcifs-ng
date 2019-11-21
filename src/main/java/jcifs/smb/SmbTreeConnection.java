@@ -23,6 +23,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -75,22 +76,31 @@ class SmbTreeConnection {
     private static final Random RAND = new Random();
 
 
-    /**
-     * @param ctx
-     * 
-     */
-    public SmbTreeConnection ( CIFSContext ctx ) {
+    protected SmbTreeConnection ( CIFSContext ctx ) {
         this.ctx = ctx;
         this.delegate = null;
     }
 
 
-    /**
-     * @param treeConnection
-     */
-    public SmbTreeConnection ( SmbTreeConnection treeConnection ) {
+    protected SmbTreeConnection ( SmbTreeConnection treeConnection ) {
         this.ctx = treeConnection.ctx;
         this.delegate = treeConnection;
+    }
+
+
+    static SmbTreeConnection create ( CIFSContext c ) {
+        if ( c.getConfig().isTraceResourceUsage() ) {
+            return new SmbTreeConnectionTrace(c);
+        }
+        return new SmbTreeConnection(c);
+    }
+
+
+    static SmbTreeConnection create ( SmbTreeConnection c ) {
+        if ( c.ctx.getConfig().isTraceResourceUsage() ) {
+            return new SmbTreeConnectionTrace(c);
+        }
+        return new SmbTreeConnection(c);
     }
 
 
@@ -250,13 +260,7 @@ class SmbTreeConnection {
     }
 
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see java.lang.Object#finalize()
-     */
-    @Override
-    protected void finalize () throws Throwable {
+    protected void checkRelease () {
         if ( isConnected() && this.usageCount.get() != 0 ) {
             log.warn("Tree connection was not properly released " + this);
         }
@@ -356,6 +360,7 @@ class SmbTreeConnection {
             }
 
             if ( request != null ) {
+                log.debug("Restting request");
                 request.reset();
             }
             if ( rpath != null ) {
@@ -501,7 +506,7 @@ class SmbTreeConnection {
                     log.debug("Tree is " + t);
                 }
 
-                if ( loc.getShare().equals(t.getShare()) ) {
+                if ( Objects.equals(loc.getShare(), t.getShare()) ) {
                     try ( SmbSessionImpl session = t.getSession() ) {
                         targetDomain = session.getTargetDomain();
                         if ( !session.isFailed() ) {
@@ -573,7 +578,7 @@ class SmbTreeConnection {
             }
             catch ( IOException e ) {
                 last = e;
-                log.warn("Referral failed, trying next", e);
+                log.debug("Referral failed, trying next", e);
             }
 
             if ( dr != null ) {
@@ -592,7 +597,7 @@ class SmbTreeConnection {
      * @param t
      * @throws CIFSException
      */
-    private SmbTreeImpl connectTree ( SmbResourceLocator loc, String addr, String share, SmbTransportInternal trans, SmbTreeImpl t,
+    private SmbTreeImpl connectTree ( SmbResourceLocatorImpl loc, String addr, String share, SmbTransportInternal trans, SmbTreeImpl t,
             DfsReferralData referral ) throws CIFSException {
         if ( log.isDebugEnabled() && trans.isSigningOptional() && !loc.isIPC() && !this.ctx.getConfig().isSigningEnforced() ) {
             log.debug("Signatures for file enabled but not required " + this);
@@ -611,16 +616,24 @@ class SmbTreeConnection {
         }
         catch ( SmbAuthException sae ) {
             log.debug("Authentication failed", sae);
-            if ( loc.isIPC() ) { // IPC$ - try "anonymous" credentials
-                try ( SmbSessionInternal s = trans.getSmbSession(this.ctx.withAnonymousCredentials()).unwrap(SmbSessionInternal.class);
+            if ( t.getSession().getCredentials().isAnonymous() ) { // anonymous session, refresh
+                try ( SmbSessionInternal s = trans
+                        .getSmbSession(this.ctx.withAnonymousCredentials(), t.getSession().getTargetHost(), t.getSession().getTargetDomain())
+                        .unwrap(SmbSessionInternal.class);
                       SmbTreeImpl tr = s.getSmbTree(null, null).unwrap(SmbTreeImpl.class) ) {
                     tr.treeConnect(null, null);
+                    log.debug("Anonymous retry succeeded");
                     return tr.acquire();
+                }
+                catch ( Exception e ) {
+                    log.debug("Retry also failed", e);
+                    throw sae;
                 }
             }
             else if ( this.ctx.renewCredentials(loc.getURL().toString(), sae) ) {
                 log.debug("Trying to renew credentials after auth error");
-                try ( SmbSessionInternal s = trans.getSmbSession(this.ctx).unwrap(SmbSessionInternal.class);
+                try ( SmbSessionInternal s = trans.getSmbSession(this.ctx, t.getSession().getTargetHost(), t.getSession().getTargetDomain())
+                        .unwrap(SmbSessionInternal.class);
                       SmbTreeImpl tr = s.getSmbTree(share, null).unwrap(SmbTreeImpl.class) ) {
                     if ( referral != null ) {
                         tr.markDomainDfs();
@@ -686,7 +699,7 @@ class SmbTreeConnection {
 
             String rpath = request != null ? request.getPath() : loc.getUNCPath();
             String rfullpath = request != null ? request.getFullUNCPath() : ( '\\' + loc.getServer() + '\\' + loc.getShare() + loc.getUNCPath() );
-            if ( !t.isPossiblyDfs() ) {
+            if ( t.isInDomainDfs() || !t.isPossiblyDfs() ) {
                 if ( t.isInDomainDfs() ) {
                     // need to adjust request path
                     DfsReferralData dr = t.getTreeReferral();
@@ -863,7 +876,7 @@ class SmbTreeConnection {
     public boolean isSame ( SmbTreeConnection other ) {
         try ( SmbTreeImpl t1 = getTree();
               SmbTreeImpl t2 = other.getTree() ) {
-            return t1.equals(t2);
+            return t1 == t2;
         }
     }
 

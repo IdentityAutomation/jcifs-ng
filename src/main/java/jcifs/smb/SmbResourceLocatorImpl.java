@@ -341,7 +341,7 @@ class SmbResourceLocatorImpl implements SmbResourceLocatorInternal, Cloneable {
         if ( this.dfsReferral == null ) {
             return null;
         }
-        return "smb:/" + this.dfsReferral.getServer() + "/" + this.dfsReferral.getShare() + this.getUNCPath().replace('\\', '/');
+        return "smb://" + this.dfsReferral.getServer() + "/" + this.dfsReferral.getShare() + this.getUNCPath().replace('\\', '/');
     }
 
 
@@ -592,6 +592,12 @@ class SmbResourceLocatorImpl implements SmbResourceLocatorInternal, Cloneable {
     public boolean isRoot () {
         // length == 0 should not happen
         return getShare() == null && getUNCPath().length() <= 1;
+    }
+
+
+    boolean isRootOrShare () {
+        // length == 0 should not happen
+        return getUNCPath().length() <= 1;
     }
 
 
