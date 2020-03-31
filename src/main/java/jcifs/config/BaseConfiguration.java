@@ -48,7 +48,7 @@ import jcifs.SmbConstants;
  */
 public class BaseConfiguration implements Configuration {
 
-    private static final Logger log = LoggerFactory.getLogger(PropertyConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseConfiguration.class);
     private static final Map<String, Integer> DEFAULT_BATCH_LIMITS = new HashMap<>();
 
     static {
@@ -134,7 +134,8 @@ public class BaseConfiguration implements Configuration {
     protected Set<String> disallowCompound;
     protected DialectVersion minVersion;
     protected DialectVersion maxVersion;
-    private boolean requireSecureNegotiate = true;
+    protected boolean requireSecureNegotiate = true;
+    protected boolean sendNTLMTargetName = true;
     private byte[] machineId;
 
 
@@ -605,6 +606,17 @@ public class BaseConfiguration implements Configuration {
     @Override
     public boolean isStrictResourceLifecycle () {
         return this.strictResourceLifecycle;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see jcifs.Configuration#isSendNTLMTargetName()
+     */
+    @Override
+    public boolean isSendNTLMTargetName () {
+        return this.sendNTLMTargetName;
     }
 
 

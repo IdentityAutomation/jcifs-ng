@@ -230,14 +230,15 @@ public class DfsImpl implements DfsResolver {
     public SmbTransport getDc ( CIFSContext tf, String domain ) throws SmbAuthException {
         if ( tf.getConfig().isDfsDisabled() )
             return null;
-        SmbTransportImpl transport = getReferralTransport( tf, getDcReferrals( tf, domain ) );
+        SmbTransportImpl transport = getReferralTransport(tf, getDcReferrals(tf, domain));
         if ( transport == null && log.isDebugEnabled() ) {
-            log.debug( String.format( "Failed to connect to domain controller for %s", domain ) );
+            log.debug(String.format("Failed to connect to domain controller for %s", domain));
         }
         return transport;
     }
 
-    private SmbTransportImpl getReferralTransport ( CIFSContext tf, DfsReferralData dr ) throws SmbAuthException {
+
+    private static SmbTransportImpl getReferralTransport ( CIFSContext tf, DfsReferralData dr ) throws SmbAuthException {
         try {
             if ( dr != null ) {
                 DfsReferralData start = dr;
@@ -504,7 +505,7 @@ public class DfsImpl implements DfsResolver {
             links = null;
         }
         else {
-            dr = links.map.get( "\\" );
+            dr = links.map.get("\\");
         }
 
         if ( links != null ) {
@@ -527,7 +528,7 @@ public class DfsImpl implements DfsResolver {
            Map<String, CacheEntry<DfsReferralDataInternal>> roots, DfsReferralDataInternal dr, CacheEntry<DfsReferralDataInternal> links ) {
         if ( dr != null ) {
             links = new CacheEntry<>(tf.getConfig().getDfsTtl());
-            links.map.put( "\\", dr );
+            links.map.put("\\", dr);
             DfsReferralDataInternal tmp = dr;
             do {
                 /*
@@ -564,8 +565,7 @@ public class DfsImpl implements DfsResolver {
      * @return
      * @throws SmbAuthException
      */
-    private DfsReferralDataInternal fetchRootReferral ( CIFSContext tf, String domain, String root, String refServerName )
-            throws SmbAuthException {
+    private DfsReferralDataInternal fetchRootReferral ( CIFSContext tf, String domain, String root, String refServerName ) throws SmbAuthException {
         DfsReferralDataInternal dr;
         try ( SmbTransport dc = getDc(tf, domain) ) {
             if ( dc == null ) {

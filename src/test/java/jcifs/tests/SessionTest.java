@@ -124,6 +124,8 @@ public class SessionTest extends BaseCIFSTest {
     @Test
     public void logonUserNoDomain () throws IOException {
         Assume.assumeTrue(getTestDomain().equalsIgnoreCase(getTestUserDomain()));
+        // without a domain name, at this point we do not resolve the domain DFS roots
+        Assume.assumeTrue(getProperties().get("test.share.dfsroot.url") == null);
         CIFSContext ctx = getContext();
         try ( SmbResource f = new SmbFile(
             getTestShareURL(),
@@ -227,31 +229,55 @@ public class SessionTest extends BaseCIFSTest {
     }
 
 
+    @Test
+    public void testAuthErrorNoConnLeak () throws Exception {
+        CIFSContext cifsContext = getNewContext().withCredentials(new NtlmPasswordAuthenticator("wrong", "wrong", "wrong"));
+        try ( SmbFile f = new SmbFile("smb://" + getTestServer() + "/IPC$/test", cifsContext); ) {
+            f.connect();
+            assertFalse(true);
+        }
+        catch ( SmbAuthException e ) {
+            // ignore
+        }
+
+        assertFalse(cifsContext.close());
+    }
+
+
     // #46
     @Test
     public void testCredentialURLs () throws MalformedURLException, SmbException, UnsupportedEncodingException {
-        testCredentialUrl(
-            String.format("smb://%s:%s@%s/%s/doesnotexist",
-                    URLEncoder.encode(getTestUser(), "UTF-8"),
-                    URLEncoder.encode(getTestUserPassword(), "UTF-8"),
-                    getTestServer(),
-                    getTestShare()),
-            getTestUser(),
-            getTestUserPassword(),
-            null);
-
-        if ( getTestUserDomain() != null ) {
+        try {
             testCredentialUrl(
-                String.format(
-                    "smb://%s;%s:%s@%s/%s/doesnotexist",
-                    getTestUserDomain(),
+                String.format("smb://%s:%s@%s/%s/doesnotexist",
                     URLEncoder.encode(getTestUser(), "UTF-8"),
                     URLEncoder.encode(getTestUserPassword(), "UTF-8"),
                     getTestServer(),
                     getTestShare()),
                 getTestUser(),
                 getTestUserPassword(),
-                getTestUserDomain());
+                null);
+
+            if ( getTestUserDomain() != null ) {
+                testCredentialUrl(
+                    String.format(
+                        "smb://%s;%s:%s@%s/%s/doesnotexist",
+                        getTestUserDomain(),
+                        URLEncoder.encode(getTestUser(), "UTF-8"),
+                        URLEncoder.encode(getTestUserPassword(), "UTF-8"),
+                        getTestServer(),
+                        getTestShare()),
+                    getTestUser(),
+                    getTestUserPassword(),
+                    getTestUserDomain());
+            }
+        }
+        catch ( SmbException e ) {
+            // no setup to resolve hostname if netbios is used
+            if ( e.getCause() instanceof UnknownHostException ) {
+                Assume.assumeTrue(false);
+            }
+            throw e;
         }
     }
 
@@ -300,7 +326,7 @@ public class SessionTest extends BaseCIFSTest {
     @Test ( expected = SmbException.class )
     public void testPoolLogonFail () throws CIFSException, UnknownHostException {
         CIFSContext ctx = withTestNTLMCredentials(getContext());
-        ctx.getTransportPool().logon(ctx, ctx.getNameServiceClient().getByName(getTestServer()), 12345);
+        ctx.getTransportPool().logon(ctx, ctx.getNameServiceClient().getByName("0.0.0.0"), 12345);
     }
 
 

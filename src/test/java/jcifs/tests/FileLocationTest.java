@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import jcifs.Address;
@@ -446,6 +447,48 @@ public class FileLocationTest {
         try ( SmbResource r = new SmbFile("smb://TESTING/IPC$/?address=1.2.3.4", getContext()) ) {
             Address a = r.getLocator().getAddress();
             assertEquals("1.2.3.4", a.getHostAddress());
+        }
+    }
+
+
+    @Test
+    @Ignore
+    public void testRelativeWhitespaceStart () throws Exception {
+        try ( SmbResource r = new SmbFile("smb://0.0.0.0/asdasf/", getContext());
+              SmbResource c = new SmbFile(r, " test") ) {
+            assertEquals(' ', c.getName().charAt(0));
+            assertEquals(" test", c.getName());
+            try ( SmbFile t = new SmbFile(c.getLocator().getURL(), getContext()) ) {
+                assertEquals(" test", t.getName());
+            }
+        }
+    }
+
+
+    @Test
+    @Ignore
+    public void testRelativeWhitespaceEnd () throws Exception {
+        try ( SmbResource r = new SmbFile("smb://0.0.0.0/asdasf/", getContext());
+              SmbResource c = new SmbFile(r, "test ") ) {
+            assertEquals(' ', c.getName().charAt(c.getName().length() - 1));
+            assertEquals("test ", c.getName());
+            try ( SmbFile t = new SmbFile(c.getLocator().getURL(), getContext()) ) {
+                assertEquals("test ", t.getName());
+            }
+        }
+    }
+
+
+    @Test
+    @Ignore
+    public void testURLCharacter () throws Exception {
+        // ? is invalid in filenames, still this should not matter for the url
+        try ( SmbResource r = new SmbFile("smb://0.0.0.0/asdasf/", getContext());
+              SmbResource c = new SmbFile(r, "test?#foo") ) {
+            assertEquals("test?#foo", c.getName());
+            try ( SmbFile t = new SmbFile(c.getLocator().getURL(), getContext()) ) {
+                assertEquals("test?#foo", t.getName());
+            }
         }
     }
 
