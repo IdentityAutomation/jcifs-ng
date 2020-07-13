@@ -498,8 +498,8 @@ public class DfsImpl implements DfsResolver {
         if ( links == null ) {
             log.trace("Loadings roots");
             String refServerName = domain;
-            dr = fetchRootReferral( tf, domain, root, refServerName );
-            links = cacheRootReferral( tf, domain, root, roots, dr, links );
+            dr = fetchRootReferral(tf, domain, root, refServerName);
+            links = cacheRootReferral(tf, domain, root, roots, dr, links);
         }
         else if ( links instanceof NegativeCacheEntry ) {
             links = null;
@@ -525,7 +525,7 @@ public class DfsImpl implements DfsResolver {
      * @return
      */
     private static CacheEntry<DfsReferralDataInternal> cacheRootReferral ( CIFSContext tf, String domain, String root,
-           Map<String, CacheEntry<DfsReferralDataInternal>> roots, DfsReferralDataInternal dr, CacheEntry<DfsReferralDataInternal> links ) {
+            Map<String, CacheEntry<DfsReferralDataInternal>> roots, DfsReferralDataInternal dr, CacheEntry<DfsReferralDataInternal> links ) {
         if ( dr != null ) {
             links = new CacheEntry<>(tf.getConfig().getDfsTtl());
             links.map.put("\\", dr);
@@ -538,8 +538,8 @@ public class DfsImpl implements DfsResolver {
                  * attempts to resolve DFS use the last successful
                  * referral first.
                  */
-                tmp.setCacheMap( links.map );
-                tmp.setKey( "\\" );
+                tmp.setCacheMap(links.map);
+                tmp.setKey("\\");
                 tmp = tmp.next();
             }
             while ( tmp != dr );
@@ -589,7 +589,7 @@ public class DfsImpl implements DfsResolver {
                 catch ( IOException e ) {
                     log.warn("Failed to connect to domain controller", e);
                 }
-                dr = getReferral( tf, trans, domain, domain, refServerName, root, null );
+                dr = getReferral(tf, trans, domain, domain, refServerName, root, null);
             }
         }
 
@@ -597,7 +597,7 @@ public class DfsImpl implements DfsResolver {
             log.trace("Have DC referral " + dr);
         }
 
-        if ( dr != null && domain.equals( dr.getServer() ) && root.equals( dr.getShare() ) ) {
+        if ( dr != null && domain.equals(dr.getServer()) && root.equals(dr.getShare()) ) {
             // If we do cache these we never get to the properly cached
             // standalone referral we might have.
             log.warn("Dropping self-referential referral " + dr);
@@ -618,8 +618,8 @@ public class DfsImpl implements DfsResolver {
      * @return
      * @throws SmbAuthException
      */
-    private DfsReferralDataInternal getLinkReferral ( CIFSContext tf, String domain, String root, String path, DfsReferralDataInternal rootDr, long now,
-          CacheEntry<DfsReferralDataInternal> links ) throws SmbAuthException {
+    private DfsReferralDataInternal getLinkReferral ( CIFSContext tf, String domain, String root, String path, DfsReferralDataInternal rootDr,
+            long now, CacheEntry<DfsReferralDataInternal> links ) throws SmbAuthException {
         DfsReferralDataInternal dr = rootDr;
         String link;
 
@@ -676,7 +676,7 @@ public class DfsImpl implements DfsResolver {
         }
 
         if ( dr == null ) {
-            try ( SmbTransportInternal trans = getReferralTransport( tf, rootDr ) ) {
+            try ( SmbTransportInternal trans = getReferralTransport(tf, rootDr) ) {
                 if ( trans == null )
                     return null;
 
