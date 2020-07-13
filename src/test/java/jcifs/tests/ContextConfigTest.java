@@ -25,15 +25,19 @@ import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 
 import jcifs.CIFSContext;
+import jcifs.CIFSException;
 import jcifs.Config;
 import jcifs.Credentials;
+import jcifs.DialectVersion;
 import jcifs.SmbResource;
+import jcifs.config.PropertyConfiguration;
 import jcifs.context.SingletonContext;
 import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbFile;
@@ -77,8 +81,8 @@ public class ContextConfigTest {
         Credentials guestCreds = this.context.withGuestCrendentials().getCredentials();
         assertThat(guestCreds, CoreMatchers.is(CoreMatchers.instanceOf(NtlmPasswordAuthenticator.class)));
         NtlmPasswordAuthenticator ntlmGuestCreds = guestCreds.unwrap(NtlmPasswordAuthenticator.class);
-        assertEquals("GUEST", ntlmGuestCreds.getUsername());
-        assertThat("anonymous", ntlmGuestCreds.isAnonymous(), CoreMatchers.is(true));
+        assertThat("anonymous", ntlmGuestCreds.isAnonymous(), CoreMatchers.is(false));
+        assertThat("guest", ntlmGuestCreds.isGuest(), CoreMatchers.is(true));
 
         Credentials anonCreds = this.context.withAnonymousCredentials().getCredentials();
         assertThat(anonCreds, CoreMatchers.is(CoreMatchers.instanceOf(NtlmPasswordAuthenticator.class)));
@@ -133,6 +137,62 @@ public class ContextConfigTest {
             assertEquals("DOMAIN", ntlm.getUserDomain());
             assertEquals("bar", ntlm.getPassword());
         }
+    }
+
+
+    @Test
+    // #216
+    public void testMinMaxVersions () throws CIFSException {
+        Properties prop1 = new Properties();
+        prop1.setProperty("jcifs.smb.client.minVersion", "SMB302");
+        PropertyConfiguration p1 = new PropertyConfiguration(prop1);
+        assertEquals(DialectVersion.SMB302, p1.getMinimumVersion());
+        assertEquals(DialectVersion.SMB302, p1.getMaximumVersion());
+
+        Properties prop2 = new Properties();
+        prop2.setProperty("jcifs.smb.client.maxVersion", "SMB302");
+        prop2.setProperty("jcifs.smb.client.minVersion", "SMB311");
+        PropertyConfiguration p2 = new PropertyConfiguration(prop2);
+        assertEquals(DialectVersion.SMB311, p2.getMinimumVersion());
+        assertEquals(DialectVersion.SMB311, p2.getMaximumVersion());
+
+        Properties prop3 = new Properties();
+        prop3.setProperty("jcifs.smb.client.minVersion", "SMB202");
+        PropertyConfiguration p3 = new PropertyConfiguration(prop3);
+        assertEquals(DialectVersion.SMB202, p3.getMinimumVersion());
+
+        // needs to be adjusted when default changes
+        assertEquals(DialectVersion.SMB210, p3.getMaximumVersion());
+
+    }
+
+
+    @Test
+    // #226
+    public void testLegacyConfig () throws CIFSException {
+        Properties prop1 = new Properties();
+        prop1.setProperty("jcifs.smb.client.enableSMB2", "false");
+        prop1.setProperty("jcifs.smb.client.disableSMB1", "false");
+        PropertyConfiguration p1 = new PropertyConfiguration(prop1);
+
+        assertEquals(DialectVersion.SMB1, p1.getMinimumVersion());
+        assertEquals(DialectVersion.SMB1, p1.getMaximumVersion());
+
+        Properties prop2 = new Properties();
+        prop2.setProperty("jcifs.smb.client.enableSMB2", "true");
+        prop2.setProperty("jcifs.smb.client.disableSMB1", "false");
+        PropertyConfiguration p2 = new PropertyConfiguration(prop2);
+
+        assertEquals(DialectVersion.SMB1, p2.getMinimumVersion());
+        // needs to be adjusted when default changes
+        assertEquals(DialectVersion.SMB210, p2.getMaximumVersion());
+
+        Properties prop3 = new Properties();
+        prop3.setProperty("jcifs.smb.client.enableSMB2", "true");
+        prop3.setProperty("jcifs.smb.client.disableSMB1", "true");
+        PropertyConfiguration p3 = new PropertyConfiguration(prop3);
+
+        assertEquals(DialectVersion.SMB202, p3.getMinimumVersion());
     }
 
 }

@@ -662,6 +662,12 @@ class SmbTreeImpl implements SmbTreeInternal {
         if ( rsvc == null && !transport.isSMB2() ) {
             throw new SmbException("Service is NULL");
         }
+
+        if ( transport.getContext().getConfig().isIpcSigningEnforced() && ( "IPC$".equals(this.getShare()) || "IPC".equals(rsvc) )
+                && !sess.getCredentials().isAnonymous() && sess.getDigest() == null ) {
+            throw new SmbException("IPC signing is enforced, but no signing is available");
+        }
+
         this.service = rsvc;
         this.inDfs = response.isShareDfs();
         this.treeNum = TREE_CONN_COUNTER.incrementAndGet();
@@ -779,6 +785,7 @@ class SmbTreeImpl implements SmbTreeInternal {
      * @see jcifs.smb.SmbTreeInternal#connectLogon(jcifs.CIFSContext)
      */
     @Override
+    @Deprecated
     public void connectLogon ( CIFSContext tf ) throws SmbException {
         if ( tf.getConfig().getLogonShare() == null ) {
             try {

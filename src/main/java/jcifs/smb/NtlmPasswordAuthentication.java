@@ -34,6 +34,8 @@ import jcifs.CIFSContext;
  * <p>
  * Read <a href="../../../authhandler.html">jCIFS Exceptions and
  * NtlmAuthenticator</a> for related information.
+ * 
+ * @deprecated use {@link NtlmPasswordAuthenticator} instead
  */
 @Deprecated
 public class NtlmPasswordAuthentication extends NtlmPasswordAuthenticator {
@@ -100,7 +102,8 @@ public class NtlmPasswordAuthentication extends NtlmPasswordAuthenticator {
         super(
             domain != null ? domain : tc.getConfig().getDefaultDomain(),
             username != null ? username : ( tc.getConfig().getDefaultUsername() != null ? tc.getConfig().getDefaultUsername() : "GUEST" ),
-            password != null ? password : ( tc.getConfig().getDefaultPassword() != null ? tc.getConfig().getDefaultPassword() : "" ));
+            password != null ? password : ( tc.getConfig().getDefaultPassword() != null ? tc.getConfig().getDefaultPassword() : "" ),
+            (AuthenticationType) null);
         this.context = tc;
     }
 
