@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -774,7 +775,13 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
          */
 
         if ( th.isSMB2() ) {
-            return (SmbBasicFileInfo) withOpen(th, null); // just open and close. withOpen will store the attributes
+            // just open and close. withOpen will store the attributes
+            return (SmbBasicFileInfo) withOpen(
+                th,
+                Smb2CreateRequest.FILE_OPEN,
+                SmbConstants.FILE_READ_ATTRIBUTES,
+                SmbConstants.FILE_SHARE_READ | SmbConstants.FILE_SHARE_WRITE,
+                null);
         }
         else if ( th.hasCapability(SmbConstants.CAP_NT_SMBS) ) {
             /*
@@ -1334,7 +1341,8 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
                 // trigger requests to resolve the actual target
                 exists();
                 dest.exists();
-                if ( !sh.isSameTree(th) ) {
+
+                if ( !Objects.equals(getServerWithDfs(), dest.getServerWithDfs()) || !Objects.equals(getShare(), dest.getShare()) ) {
                     throw new SmbException("Cannot rename between different trees");
                 }
             }
@@ -1615,7 +1623,12 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
         if ( th.isSMB2() ) {
             Smb2QueryInfoRequest qreq = new Smb2QueryInfoRequest(th.getConfig());
             qreq.setFilesystemInfoClass(level);
-            Smb2QueryInfoResponse resp = withOpen(th, qreq);
+            Smb2QueryInfoResponse resp = withOpen(
+                th,
+                Smb2CreateRequest.FILE_OPEN,
+                SmbConstants.FILE_READ_ATTRIBUTES,
+                SmbConstants.FILE_SHARE_READ | SmbConstants.FILE_SHARE_WRITE,
+                qreq);
             return resp.getInfo(clazz);
         }
         Trans2QueryFSInformationResponse response = new Trans2QueryFSInformationResponse(th.getConfig(), level);
@@ -1854,7 +1867,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
 
     @Override
-    public void setFileTimes( long createTime, long lastLastModified, long lastLastAccess ) throws SmbException {
+    public void setFileTimes ( long createTime, long lastLastModified, long lastLastAccess ) throws SmbException {
         if ( this.fileLocator.isRootOrShare() ) {
             throw new SmbException("Invalid operation for workgroups, servers, or shares");
         }
@@ -2221,7 +2234,12 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
             if ( th.isSMB2() ) {
                 Smb2QueryInfoRequest req = new Smb2QueryInfoRequest(th.getConfig());
                 req.setFileInfoClass(FileInformation.FILE_INTERNAL_INFO);
-                Smb2QueryInfoResponse resp = withOpen(th, req);
+                Smb2QueryInfoResponse resp = withOpen(
+                    th,
+                    Smb2CreateRequest.FILE_OPEN,
+                    SmbConstants.FILE_READ_ATTRIBUTES,
+                    SmbConstants.FILE_SHARE_READ | SmbConstants.FILE_SHARE_WRITE,
+                    req);
                 FileInternalInfo info = resp.getInfo(FileInternalInfo.class);
                 return info.getIndexNumber();
             }
@@ -2239,7 +2257,12 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
             Smb2QueryInfoRequest req = new Smb2QueryInfoRequest(th.getConfig());
             req.setInfoType(Smb2Constants.SMB2_0_INFO_SECURITY);
             req.setAdditionalInformation(types);
-            Smb2QueryInfoResponse resp = withOpen(th, req);
+            Smb2QueryInfoResponse resp = withOpen(
+                th,
+                Smb2CreateRequest.FILE_OPEN,
+                SmbConstants.FILE_READ_ATTRIBUTES | SmbConstants.READ_CONTROL,
+                SmbConstants.FILE_SHARE_READ | SmbConstants.FILE_SHARE_WRITE,
+                req);
             return resp.getInfo(SecurityDescriptor.class);
         }
 
