@@ -5,7 +5,7 @@
 	<artifactId>jcifs-ng</artifactId>
 	<groupId>eu.agno3.jcifs</groupId>
 	<packaging>bundle</packaging>
-	<version>2.1.11-idauto-jdk17-SNAPSHOT</version>
+	<version>2.1.11-idauto-jdk21-SNAPSHOT</version>
 	<description>A pure-java CIFS/SMB client library</description>
 	<url>https://github.com/AgNO3/jcifs-ng/</url>
 
@@ -42,8 +42,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.sourceVersion>17</java.sourceVersion>
-		<java.targetVersion>17</java.targetVersion>
+		<java.sourceVersion>21</java.sourceVersion>
+		<java.targetVersion>21</java.targetVersion>
 		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
 		<osgi-version-qualifier>${maven.build.timestamp}</osgi-version-qualifier>
 		<project.scm.id>github</project.scm.id>
@@ -135,8 +135,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>17</source>
-					<target>17</target>
+					<source>21</source>
+					<target>21</target>
 					<compilerArgs>
 						<!-- These packages are only used in tests -->
 						<arg>--add-exports</arg>
