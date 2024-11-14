@@ -28,8 +28,8 @@ import jcifs.CIFSContext;
 
 /**
  * This class stores and encrypts NTLM user credentials. The default
- * credentials are retrieved from the <tt>jcifs.smb.client.domain</tt>,
- * <tt>jcifs.smb.client.username</tt>, and <tt>jcifs.smb.client.password</tt>
+ * credentials are retrieved from the <code>jcifs.smb.client.domain</code>,
+ * <code>jcifs.smb.client.username</code>, and <code>jcifs.smb.client.password</code>
  * properties.
  * <p>
  * Read <a href="../../../authhandler.html">jCIFS Exceptions and
@@ -68,8 +68,8 @@ public class NtlmPasswordAuthentication extends NtlmPasswordAuthenticator {
 
 
     /**
-     * Create an <tt>NtlmPasswordAuthentication</tt> object from the userinfo
-     * component of an SMB URL like "<tt>domain;user:pass</tt>". This constructor
+     * Create an <code>NtlmPasswordAuthentication</code> object from the userinfo
+     * component of an SMB URL like "<code>domain;user:pass</code>". This constructor
      * is used internally be jCIFS when parsing SMB URLs.
      * 
      * @param tc
@@ -86,10 +86,10 @@ public class NtlmPasswordAuthentication extends NtlmPasswordAuthenticator {
 
 
     /**
-     * Create an <tt>NtlmPasswordAuthentication</tt> object from a
-     * domain, username, and password. Parameters that are <tt>null</tt>
-     * will be substituted with <tt>jcifs.smb.client.domain</tt>,
-     * <tt>jcifs.smb.client.username</tt>, <tt>jcifs.smb.client.password</tt>
+     * Create an <code>NtlmPasswordAuthentication</code> object from a
+     * domain, username, and password. Parameters that are <code>null</code>
+     * will be substituted with <code>jcifs.smb.client.domain</code>,
+     * <code>jcifs.smb.client.username</code>, <code>jcifs.smb.client.password</code>
      * property values.
      * 
      * @param tc
@@ -109,8 +109,8 @@ public class NtlmPasswordAuthentication extends NtlmPasswordAuthenticator {
 
 
     /**
-     * Create an <tt>NtlmPasswordAuthentication</tt> object with raw password
-     * hashes. This is used exclusively by the <tt>jcifs.http.NtlmSsp</tt>
+     * Create an <code>NtlmPasswordAuthentication</code> object with raw password
+     * hashes. This is used exclusively by the <code>jcifs.http.NtlmSsp</code>
      * class which is in turn used by NTLM HTTP authentication functionality.
      * 
      * @param domain
@@ -161,10 +161,10 @@ public class NtlmPasswordAuthentication extends NtlmPasswordAuthenticator {
 
 
     /**
-     * Compares two <tt>NtlmPasswordAuthentication</tt> objects for
-     * equality. Two <tt>NtlmPasswordAuthentication</tt> objects are equal if
+     * Compares two <code>NtlmPasswordAuthentication</code> objects for
+     * equality. Two <code>NtlmPasswordAuthentication</code> objects are equal if
      * their caseless domain and username fields are equal and either both hashes are external and they are equal or
-     * both internally supplied passwords are equal. If one <tt>NtlmPasswordAuthentication</tt> object has external
+     * both internally supplied passwords are equal. If one <code>NtlmPasswordAuthentication</code> object has external
      * hashes (meaning negotiated via NTLM HTTP Authentication) and the other does not they will not be equal. This is
      * technically not correct however the server 8 byte challenge would be required to compute and compare the password
      * hashes but that it not available with this method.

@@ -26,7 +26,6 @@ import jcifs.SmbTree;
 
 /**
  * @author mbechler
- * @internal
  */
 public interface SmbSessionInternal extends SmbSession {
 

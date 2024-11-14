@@ -24,12 +24,12 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.bouncycastle.util.encoders.Base64;
 
@@ -49,9 +49,9 @@ import jcifs.smb.SmbAuthException;
  * to protect content with NTLM HTTP Authentication. Servlets that
  * extend this abstract base class may be authenticated against an SMB
  * server or domain controller depending on how the
- * <tt>jcifs.smb.client.domain</tt> or <tt>jcifs.http.domainController</tt>
+ * <code>jcifs.smb.client.domain</code> or <code>jcifs.http.domainController</code>
  * properties are be specified. <b>With later containers the
- * <tt>NtlmHttpFilter</tt> should be used</b>. For custom NTLM HTTP Authentication schemes the <tt>NtlmSsp</tt> may be
+ * <code>NtlmHttpFilter</code> should be used</b>. For custom NTLM HTTP Authentication schemes the <code>NtlmSsp</code> may be
  * used.
  * <p>
  * Read <a href="../../../ntlmhttpauth.html">jCIFS NTLM HTTP Authentication and the Network Explorer Servlet</a> related

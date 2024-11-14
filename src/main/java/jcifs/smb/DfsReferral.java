@@ -25,8 +25,6 @@ import jcifs.DfsReferralData;
 /**
  * 
  * @author mbechler
- *
- * @internal
  */
 @SuppressWarnings ( "javadoc" )
 public class DfsReferral extends SmbException {
@@ -40,7 +38,7 @@ public class DfsReferral extends SmbException {
 
 
     /**
-     * @param dr
+     * @param data
      */
     public DfsReferral ( DfsReferralData data ) {
         this.data = data;

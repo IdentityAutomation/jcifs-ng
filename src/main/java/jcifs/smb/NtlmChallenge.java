@@ -26,8 +26,7 @@ import jcifs.util.Hexdump;
 
 
 /**
- * 
- * @internal
+ *
  */
 public final class NtlmChallenge implements Serializable {
 

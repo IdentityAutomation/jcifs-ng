@@ -22,7 +22,6 @@ package jcifs.smb;
  * Internal use only
  * 
  * @author mbechler
- * @internal
  */
 public enum RequestParam {
 

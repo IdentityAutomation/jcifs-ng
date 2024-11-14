@@ -38,11 +38,11 @@ import jcifs.util.Hexdump;
  * 
  * A Windows SID is a numeric identifier used to represent Windows
  * accounts. SIDs are commonly represented using a textual format such as
- * <tt>S-1-5-21-1496946806-2192648263-3843101252-1029</tt> but they may
+ * <code>S-1-5-21-1496946806-2192648263-3843101252-1029</code> but they may
  * also be resolved to yield the name of the associated Windows account
- * such as <tt>Administrators</tt> or <tt>MYDOM\alice</tt>.
+ * such as <code>Administrators</code> or <code>MYDOM\alice</code>.
  * <p>
- * Consider the following output of <tt>examples/SidLookup.java</tt>:
+ * Consider the following output of <code>examples/SidLookup.java</code>:
  * 
  * <pre>
  *        toString: S-1-5-21-4133388617-793952518-2001621813-512
@@ -52,8 +52,6 @@ import jcifs.util.Hexdump;
  *   getDomainName: WNET
  *  getAccountName: Domain Admins
  * </pre>
- * 
- * @internal
  */
 public class SID extends rpc.sid_t implements jcifs.SID {
 
@@ -147,7 +145,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
     /**
      * Construct a SID from it's textual representation such as
-     * <tt>S-1-5-21-1496946806-2192648263-3843101252-1029</tt>.
+     * <code>S-1-5-21-1496946806-2192648263-3843101252-1029</code>.
      * 
      * @param textual
      * @throws SmbException
@@ -184,8 +182,8 @@ public class SID extends rpc.sid_t implements jcifs.SID {
     /**
      * Construct a SID from a domain SID and an RID
      * (relative identifier). For example, a domain SID
-     * <tt>S-1-5-21-1496946806-2192648263-3843101252</tt> and RID <tt>1029</tt> would
-     * yield the SID <tt>S-1-5-21-1496946806-2192648263-3843101252-1029</tt>.
+     * <code>S-1-5-21-1496946806-2192648263-3843101252</code> and RID <code>1029</code> would
+     * yield the SID <code>S-1-5-21-1496946806-2192648263-3843101252-1029</code>.
      * 
      * @param domsid
      * @param rid
@@ -400,7 +398,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
     /**
      * Return the numeric representation of this sid such as
-     * <tt>S-1-5-21-1496946806-2192648263-3843101252-1029</tt>.
+     * <code>S-1-5-21-1496946806-2192648263-3843101252-1029</code>.
      */
     @Override
     public String toString () {

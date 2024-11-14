@@ -27,7 +27,6 @@ import java.net.UnknownHostException;
  * This is an internal API for resolving names
  * 
  * @author mbechler
- * @internal
  */
 public interface NameServiceClient {
 
@@ -194,7 +193,7 @@ public interface NameServiceClient {
 
 
     /**
-     * Lookup addresses for the given <tt>hostname</tt>.
+     * Lookup addresses for the given <code>hostname</code>.
      * 
      * @param hostname
      * @param possibleNTDomainOrWorkgroup
@@ -205,8 +204,8 @@ public interface NameServiceClient {
 
 
     /**
-     * Lookup <tt>hostname</tt> and return it's <tt>UniAddress</tt>. If the
-     * <tt>possibleNTDomainOrWorkgroup</tt> parameter is <tt>true</tt> an
+     * Lookup <code>hostname</code> and return it's <code>UniAddress</code>. If the
+     * <code>possibleNTDomainOrWorkgroup</code> parameter is <code>true</code> an
      * additional name query will be performed to locate a master browser.
      * 
      * @param hostname

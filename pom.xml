@@ -5,7 +5,7 @@
 	<artifactId>jcifs-ng</artifactId>
 	<groupId>eu.agno3.jcifs</groupId>
 	<packaging>bundle</packaging>
-	<version>2.1.11-idauto-SNAPSHOT</version>
+	<version>2.1.11-idauto-jdk17-SNAPSHOT</version>
 	<description>A pure-java CIFS/SMB client library</description>
 	<url>https://github.com/AgNO3/jcifs-ng/</url>
 
@@ -42,8 +42,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.sourceVersion>1.7</java.sourceVersion>
-		<java.targetVersion>1.7</java.targetVersion>
+		<java.sourceVersion>17</java.sourceVersion>
+		<java.targetVersion>17</java.targetVersion>
 		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
 		<osgi-version-qualifier>${maven.build.timestamp}</osgi-version-qualifier>
 		<project.scm.id>github</project.scm.id>
@@ -55,22 +55,22 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.0.0</version>
 			<scope>provided</scope>
 		</dependency>
 		 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.36</version>
+			<version>2.0.13</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.36</version>
+			<version>2.0.13</version>
 			<scope>test</scope>
 		</dependency>
 		 
@@ -90,14 +90,14 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>1.9.5</version>
+			<version>5.12.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>1.3.2</version>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>3.0.0</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -121,7 +121,7 @@
 						</Export-Package>
 						<Private-Package />
 						<Import-Package>
-							javax.servlet*;resolution:=optional,
+							jakarta.servlet*;resolution:=optional,
 							com.sun.security.jgss;resolution:=optional,
 							org.bouncycastle*;version="1.63",
 							!jcifs.internal*,
@@ -135,8 +135,19 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>17</source>
+					<target>17</target>
+					<compilerArgs>
+						<!-- These packages are only used in tests -->
+						<arg>--add-exports</arg>
+						<arg>java.security.jgss/sun.security.jgss.krb5=ALL-UNNAMED</arg>
+						<arg>--add-exports</arg>
+						<arg>java.security.jgss/sun.security.krb5=ALL-UNNAMED</arg>
+						<arg>--add-exports</arg>
+						<arg>java.security.jgss/sun.security.krb5.internal=ALL-UNNAMED</arg>
+						<arg>--add-exports</arg>
+						<arg>java.security.jgss/sun.security.krb5.internal.crypto=ALL-UNNAMED</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 
@@ -228,6 +239,13 @@
 					<includes>
 						<include>**/**Test.java</include>
 					</includes>
+					<!-- These packages are only used in tests -->
+					<argLine>
+						--add-exports java.security.jgss/sun.security.krb5=ALL-UNNAMED
+						--add-exports java.security.jgss/sun.security.jgss.krb5=ALL-UNNAMED
+						--add-exports java.security.jgss/sun.security.krb5.internal=ALL-UNNAMED
+						--add-exports java.security.jgss/sun.security.krb5.internal.crypto=ALL-UNNAMED
+					</argLine>
 					<systemPropertyVariables>
 						<networkaddress.cache.ttl>-1</networkaddress.cache.ttl>
 						<networkaddress.cache.negative.ttl>-1</networkaddress.cache.negative.ttl>
@@ -377,7 +395,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
+					<version>3.8.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -397,7 +415,7 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>5.1.9</version>
 				</plugin>
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
@@ -422,7 +440,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.4</version>
+					<version>3.3.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -437,7 +455,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>animal-sniffer-maven-plugin</artifactId>
-					<version>1.17</version>
+					<version>1.24</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

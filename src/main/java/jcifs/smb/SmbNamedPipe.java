@@ -55,47 +55,48 @@ import jcifs.internal.smb1.com.SmbComNTCreateAndXResponse;
  * is desired.
  *
  * <p>
- * <table border="1" cellpadding="3" cellspacing="0" width="100%" summary="Usage examples">
- * <tr bgcolor="#ccccff">
- * <td colspan="2"><b><code>SmbNamedPipe</code> Constructor Examples</b></td>
+ * <table style="border-spacing: 0px; width: 100%;" border="1">
+ * <caption>Usage examples</caption>
+ * <tr style="background-color: #ccccff;">
+ * <td style="padding: 3px;" colspan="2"><b><code>SmbNamedPipe</code> Constructor Examples</b></td>
  * <tr>
- * <td width="20%"><b>Code Sample</b></td>
- * <td><b>Description</b></td>
+ * <td style="padding: 3px; width: 20%;"><b>Code Sample</b></td>
+ * <td style="padding: 3px;"><b>Description</b></td>
  * </tr>
  * <tr>
- * <td width="20%">
+ * <td style="padding: 3px; width: 20%;">
  * 
  * <pre>
  * new SmbNamedPipe("smb://server/IPC$/PIPE/foo", SmbNamedPipe.PIPE_TYPE_RDWR | SmbNamedPipe.PIPE_TYPE_CALL, context);
  * </pre>
  * 
  * </td>
- * <td>
+ * <td style="padding: 3px;">
  * Open the Named Pipe foo for reading and writing. The pipe will behave like the <code>CallNamedPipe</code> interface.
  * </td>
  * </tr>
  * <tr>
- * <td width="20%">
+ * <td style="padding: 3px; width: 20%;">
  * 
  * <pre>
  * new SmbNamedPipe("smb://server/IPC$/foo", SmbNamedPipe.PIPE_TYPE_RDWR | SmbNamedPipe.PIPE_TYPE_TRANSACT, context);
  * </pre>
  * 
  * </td>
- * <td>
+ * <td style="padding: 3px;">
  * Open the Named Pipe foo for reading and writing. The pipe will behave like the <code>TransactNamedPipe</code>
  * interface.
  * </td>
  * </tr>
  * <tr>
- * <td width="20%">
+ * <td style="padding: 3px; width: 20%;">
  * 
  * <pre>
  * new SmbNamedPipe("smb://server/IPC$/foo", SmbNamedPipe.PIPE_TYPE_RDWR, context);
  * </pre>
  * 
  * </td>
- * <td>
+ * <td style="padding: 3px;">
  * Open the Named Pipe foo for reading and writing. The pipe will
  * behave as though the <code>CreateFile</code>, <code>ReadFile</code>,
  * <code>WriteFile</code>, and <code>CloseFile</code> interface was

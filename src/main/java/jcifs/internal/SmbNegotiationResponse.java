@@ -32,7 +32,6 @@ public interface SmbNegotiationResponse extends CommonServerMessageBlock, Respon
     /**
      * 
      * @param cifsContext
-     * @param singingEnforced
      * @param request
      * @return whether the protocol negotiation was successful
      */

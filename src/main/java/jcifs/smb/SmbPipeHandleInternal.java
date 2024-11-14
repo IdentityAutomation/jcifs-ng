@@ -27,7 +27,6 @@ import jcifs.SmbPipeHandle;
 
 /**
  * @author mbechler
- * @internal
  */
 public interface SmbPipeHandleInternal extends SmbPipeHandle {
 
@@ -57,7 +56,7 @@ public interface SmbPipeHandleInternal extends SmbPipeHandle {
      * 
      * @return this pipe's output stream
      * @throws SmbException
-     * @throws
+     * @throws CIFSException
      */
     @Override
     SmbPipeOutputStream getOutput () throws CIFSException;
@@ -82,7 +81,6 @@ public interface SmbPipeHandleInternal extends SmbPipeHandle {
      * @param buf
      * @param off
      * @param length
-     * @param direct
      * @return received bytes
      * @throws CIFSException
      * @throws IOException
@@ -94,7 +92,6 @@ public interface SmbPipeHandleInternal extends SmbPipeHandle {
      * @param buf
      * @param off
      * @param length
-     * @param direct
      * @throws IOException
      */
     void send ( byte[] buf, int off, int length ) throws IOException;

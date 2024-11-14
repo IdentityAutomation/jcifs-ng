@@ -28,8 +28,6 @@ import jcifs.util.Hexdump;
 
 /**
  * Internal use only
- * 
- * @internal
  */
 public class SmbShareInfo implements FileEntry {
 

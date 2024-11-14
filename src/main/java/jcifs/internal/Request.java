@@ -33,7 +33,6 @@ public interface Request <T extends CommonServerMessageBlockResponse> extends Co
      * 
      * @param tc
      * @return the initialized response
-     * @internal
      */
     public T initResponse ( CIFSContext tc );
 

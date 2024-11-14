@@ -42,7 +42,7 @@ public interface FileNotifyInformation {
     public static final int FILE_NOTIFY_CHANGE_DIR_NAME = 0x00000002;
 
     /**
-     * Both <tt>FILE_NOTIFY_CHANGE_FILE_NAME</tt> and <tt>FILE_NOTIFY_CHANGE_DIR_NAME</tt>
+     * Both <code>FILE_NOTIFY_CHANGE_FILE_NAME</code> and <code>FILE_NOTIFY_CHANGE_DIR_NAME</code>
      */
     public static final int FILE_NOTIFY_CHANGE_NAME = 0x00000003;
 

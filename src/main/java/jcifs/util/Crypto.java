@@ -180,7 +180,7 @@ public final class Crypto {
     /**
      * Initialize Provider Instance with customProvider
      * @param customProvider
-     * @throws Exception if Provider has already been initialized.
+     * @throws CIFSUnsupportedCryptoException if Provider has already been initialized.
      */
     public static void initProvider(Provider customProvider) throws CIFSUnsupportedCryptoException {
         if (provider != null) {

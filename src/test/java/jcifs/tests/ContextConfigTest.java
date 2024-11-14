@@ -39,7 +39,6 @@ import jcifs.config.PropertyConfiguration;
 import jcifs.context.SingletonContext;
 import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbFile;
-import org.mockito.Matchers;
 
 import static org.junit.Assert.*;
 

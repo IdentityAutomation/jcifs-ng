@@ -27,8 +27,6 @@ import jcifs.Configuration;
 
 /**
  * Cache for reusable byte buffers
- * 
- * @internal
  */
 public class BufferCacheImpl implements BufferCache {
 

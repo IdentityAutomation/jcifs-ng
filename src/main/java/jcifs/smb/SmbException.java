@@ -93,7 +93,6 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
      * 
      * @param errcode
      * @return message for NT STATUS code
-     * @internal
      */
     public static String getMessageByCode ( int errcode ) {
         String message = errorCodeMessages.get(errcode);

@@ -22,7 +22,6 @@ package jcifs;
  * Information returned in DFS referrals
  * 
  * @author mbechler
- * @internal
  */
 public interface DfsReferralData {
 

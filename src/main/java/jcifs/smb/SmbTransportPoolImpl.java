@@ -43,7 +43,6 @@ import jcifs.util.transport.TransportException;
 
 /**
  * @author mbechler
- * @internal
  */
 public class SmbTransportPoolImpl implements SmbTransportPool {
 
