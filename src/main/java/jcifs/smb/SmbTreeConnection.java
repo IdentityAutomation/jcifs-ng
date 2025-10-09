@@ -551,7 +551,7 @@ class SmbTreeConnection {
                           SmbTreeImpl ct = connectTree(loc, host, share, trans, uct, dr) ) {
 
                         if ( dr != null ) {
-                            ct.setTreeReferral(dr);
+                            ct.setTreeReferral(dr, path);
                             if ( dr != start ) {
                                 dr.unwrap(DfsReferralDataInternal.class).replaceCache();
                             }
@@ -567,7 +567,7 @@ class SmbTreeConnection {
                       SmbTreeImpl uct = smbSession.getSmbTree(share, null).unwrap(SmbTreeImpl.class);
                       SmbTreeImpl ct = connectTree(loc, host, share, trans, uct, dr) ) {
                     if ( dr != null ) {
-                        ct.setTreeReferral(dr);
+                        ct.setTreeReferral(dr, path);
                         if ( dr != start ) {
                             dr.unwrap(DfsReferralDataInternal.class).replaceCache();
                         }
