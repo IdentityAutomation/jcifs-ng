@@ -720,8 +720,8 @@ class SmbTreeConnection {
                             log.debug(String.format("Need to adjust request path %s (full: %s) -> %s", rpath, rfullpath, dr));
                         }
 
+                        String dunc = loc.handleDFSReferral(dr, rpath);
                         if ( request != null ) {
-                            String dunc = loc.handleDFSReferral(dr, rpath);
                             request.setPath(dunc);
                         }
                         return loc;
@@ -747,9 +747,8 @@ class SmbTreeConnection {
                     log.debug("Resolved " + rfullpath + " -> " + dr);
                 }
 
-
+                String dunc = loc.handleDFSReferral(dr, rpath);
                 if ( request != null ) {
-                    String dunc = loc.handleDFSReferral(dr, rpath);
                     request.setPath(dunc);
                 }
 
