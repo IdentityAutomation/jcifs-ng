@@ -1,16 +1,16 @@
 /* jcifs smb client library in Java
  * Copyright (C) 2000  "Michael B. Allen" <jcifs at samba dot org>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -103,21 +103,21 @@ import jcifs.internal.smb2.info.Smb2SetInfoRequest;
  * directory. SmbFile URLs have the following syntax:
  *
  * <blockquote>
- * 
+ *
  * <pre>
  *     smb://[[[domain;]username[:password]@]server[:port]/[[share/[dir/]file]]][?param=value[param2=value2[...]]]
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * This example:
  *
  * <blockquote>
- * 
+ *
  * <pre>
  *     smb://storage15/public/foo.txt
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * would reference the file <code>foo.txt</code> in the share
@@ -125,16 +125,16 @@ import jcifs.internal.smb2.info.Smb2SetInfoRequest;
  * to referencing files and directories, jCIFS can also address servers,
  * and workgroups.
  * <p>
- * <font color="#800000"><i>Important: all SMB URLs that represent
+ * <span style="color: #800000;"><i>Important: all SMB URLs that represent
  * workgroups, servers, shares, or directories require a trailing slash '/'.
- * </i></font>
+ * </i></span>
  * <p>
- * When using the <tt>java.net.URL</tt> class with
+ * When using the <code>java.net.URL</code> class with
  * 'smb://' URLs it is necessary to first call the static
- * <tt>jcifs.Config.registerSmbURLHandler();</tt> method. This is required
+ * <code>jcifs.Config.registerSmbURLHandler();</code> method. This is required
  * to register the SMB protocol handler.
  * <p>
- * The userinfo component of the SMB URL (<tt>domain;user:pass</tt>) must
+ * The userinfo component of the SMB URL (<code>domain;user:pass</code>) must
  * be URL encoded if it contains reserved characters. According to RFC 2396
  * these characters are non US-ASCII characters and most meta characters
  * however jCIFS will work correctly with anything but '@' which is used
@@ -155,81 +155,82 @@ import jcifs.internal.smb2.info.Smb2SetInfoRequest;
  * <p>
  * [1] This URL scheme is based largely on the <i>SMB
  * Filesharing URL Scheme</i> IETF draft.
- * 
+ *
  * <p>
- * <table border="1" cellpadding="3" cellspacing="0" width="100%" summary="URL examples">
- * <tr bgcolor="#ccccff">
- * <td colspan="2"><b>SMB URL Examples</b></td>
+ * <table style="border-spacing: 0px; width: 100%;" border="1">
+ * <caption>URL examples</caption>
+ * <tr style="background-color: #ccccff;">
+ * <td style="padding: 3px;" colspan="2"><b>SMB URL Examples</b></td>
  * <tr>
- * <td width="20%"><b>URL</b></td>
- * <td><b>Description</b></td>
+ * <td style="padding: 3px; width: 20%;"><b>URL</b></td>
+ * <td style="padding: 3px;"><b>Description</b></td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>smb://users-nyc;miallen:mypass@angus/tmp/</code></td>
- * <td>
+ * <td style="padding: 3px; width: 20%;"><code>smb://users-nyc;miallen:mypass@angus/tmp/</code></td>
+ * <td style="padding: 3px;">
  * This URL references a share called <code>tmp</code> on the server
  * <code>angus</code> as user <code>miallen</code> who's password is
  * <code>mypass</code>.
  * </td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%">
+ * <td style="padding: 3px; width: 20%;">
  * <code>smb://Administrator:P%40ss@msmith1/c/WINDOWS/Desktop/foo.txt</code></td>
- * <td>
+ * <td style="padding: 3px;">
  * A relatively sophisticated example that references a file
  * <code>msmith1</code>'s desktop as user <code>Administrator</code>. Notice the '@' is URL encoded with the '%40'
  * hexcode escape.
  * </td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>smb://angus/</code></td>
- * <td>
+ * <td style="padding: 3px; width: 20%;"><code>smb://angus/</code></td>
+ * <td style="padding: 3px;">
  * This references only a server. The behavior of some methods is different
  * in this context(e.g. you cannot <code>delete</code> a server) however
  * as you might expect the <code>list</code> method will list the available
  * shares on this server.
  * </td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>smb://angus.foo.net/d/jcifs/pipes.doc</code></td>
- * <td>
+ * <td style="padding: 3px; width: 20%;"><code>smb://angus.foo.net/d/jcifs/pipes.doc</code></td>
+ * <td style="padding: 3px;">
  * The server name may also be a DNS name as it is in this example. See
  * <a href="../../../resolver.html">Setting Name Resolution Properties</a>
  * for details.
  * </td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>smb://192.168.1.15/ADMIN$/</code></td>
- * <td>
+ * <td style="padding: 3px; width: 20%;"><code>smb://192.168.1.15/ADMIN$/</code></td>
+ * <td style="padding: 3px;">
  * The server name may also be an IP address. See <a
  * href="../../../resolver.html">Setting Name Resolution Properties</a>
  * for details.
  * </td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%">
+ * <td style="padding: 3px; width: 20%;">
  * <code>smb://domain;username:password@server/share/path/to/file.txt</code></td>
- * <td>
+ * <td style="padding: 3px;">
  * A prototypical example that uses all the fields.
  * </td>
  * </tr>
  *
  * <tr>
- * <td width="20%">
+ * <td style="padding: 3px; width: 20%;">
  * <code>smb://server/share/path/to/dir &lt;-- ILLEGAL </code></td>
- * <td>
+ * <td style="padding: 3px;">
  * URLs that represent servers, shares, or directories require a trailing slash '/'.
  * </td>
  * </tr>
  *
  * </table>
- * 
+ *
  * <p>
  * A second constructor argument may be specified to augment the URL
  * for better programmatic control when processing many files under
@@ -240,101 +241,102 @@ import jcifs.internal.smb2.info.Smb2SetInfoRequest;
  * argument is used.
  *
  * <p>
- * <table border="1" cellpadding="3" cellspacing="0" width="100%" summary="Usage examples">
- * <tr bgcolor="#ccccff">
- * <td colspan="3">
+ * <table style="border-spacing: 0px; width: 100%;" border="1">
+ * <caption>Usage Examples</caption>
+ * <tr style="background-color: #ccccff;">
+ * <td style="padding: 3px;" colspan="3">
  * <b>Examples Of SMB URLs When Augmented With A Second Constructor Parameter</b></td>
  * <tr>
- * <td width="20%">
+ * <td style="padding: 3px; width: 20%;">
  * <b>First Parameter</b></td>
- * <td><b>Second Parameter</b></td>
- * <td><b>Result</b></td>
+ * <td style="padding: 3px;"><b>Second Parameter</b></td>
+ * <td style="padding: 3px;"><b>Result</b></td>
  * </tr>
  *
  * <tr>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  smb://host/share/a/b/
  * </code></td>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  c/d/
  * </code></td>
- * <td><code>
+ * <td style="padding: 3px;"><code>
  *  smb://host/share/a/b/c/d/
  * </code></td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  smb://host/share/foo/bar/
  * </code></td>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  /share2/zig/zag
  * </code></td>
- * <td><code>
+ * <td style="padding: 3px;"><code>
  *  smb://host/share2/zig/zag
  * </code></td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  smb://host/share/foo/bar/
  * </code></td>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  ../zip/
  * </code></td>
- * <td><code>
+ * <td style="padding: 3px;"><code>
  *  smb://host/share/foo/zip/
  * </code></td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  smb://host/share/zig/zag
  * </code></td>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  smb://foo/bar/
  * </code></td>
- * <td><code>
+ * <td style="padding: 3px;"><code>
  *  smb://foo/bar/
  * </code></td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  smb://host/share/foo/
  * </code></td>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  ../.././.././../foo/
  * </code></td>
- * <td><code>
+ * <td style="padding: 3px;"><code>
  *  smb://host/foo/
  * </code></td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  smb://host/share/zig/zag
  * </code></td>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  /
  * </code></td>
- * <td><code>
+ * <td style="padding: 3px;"><code>
  *  smb://host/
  * </code></td>
  * </tr>
- * 
+ *
  * <tr>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  smb://server/
  * </code></td>
- * <td width="20%"><code>
+ * <td style="padding: 3px; width: 20%;"><code>
  *  ../
  * </code></td>
- * <td><code>
+ * <td style="padding: 3px;"><code>
  *  smb://server/
  * </code></td>
  * </tr>
- * 
+ *
  * </table>
  *
  * <p>
@@ -389,7 +391,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
     /**
      * Constructs an SmbFile representing a resource on an SMB network such
-     * as a file or directory from a <tt>URL</tt> object.
+     * as a file or directory from a <code>URL</code> object.
      *
      * @param url
      *            The URL of the target resource
@@ -415,7 +417,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      *             If the <code>parent</code> and <code>child</code> parameters
      *             do not follow the prescribed syntax
      * @throws UnknownHostException
-     *             If the server or workgroup of the <tt>context</tt> file cannot be determined
+     *             If the server or workgroup of the <code>context</code> file cannot be determined
      */
     public SmbFile ( SmbResource context, String name ) throws MalformedURLException, UnknownHostException {
         this(
@@ -428,7 +430,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
     /**
      * Construct from string URL
-     * 
+     *
      * @param url
      * @param tc
      *            context to use
@@ -441,7 +443,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
     /**
      * Construct from URL
-     * 
+     *
      * @param url
      * @param tc
      *            context to use
@@ -520,7 +522,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
 
     /**
-     * 
+     *
      * @return a tree handle
      * @throws CIFSException
      */
@@ -549,7 +551,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
     /**
      * @return
      * @throws CIFSException
-     * 
+     *
      */
     synchronized SmbTreeHandleImpl ensureTreeConnected () throws CIFSException {
         if ( this.treeHandle == null || !this.treeHandle.isConnected() ) {
@@ -962,7 +964,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      * If the path of this <code>SmbFile</code> falls within a DFS volume,
      * this method will return the referral path to which it maps. Otherwise
      * <code>null</code> is returned.
-     * 
+     *
      * @return URL to the DFS volume
      * @throws SmbException
      */
@@ -1009,7 +1011,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
     /**
      * Retrieve the hostname of the server for this SMB resource. If the resources has been resolved by DFS this will
      * return the target name.
-     * 
+     *
      * @return The server name
      */
     public String getServerWithDfs () {
@@ -1022,7 +1024,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      * <code>SmbFile</code> references a workgroup, the name of the workgroup
      * is returned. If this <code>SmbFile</code> refers to the root of this
      * SMB network hierarchy, <code>null</code> is returned.
-     * 
+     *
      * @return The server or workgroup name or <code>null</code> if this
      *         <code>SmbFile</code> refers to the root <code>smb://</code> resource.
      */
@@ -1201,7 +1203,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      * <code>smb://server/</code>,
      * <li>or <code>null</code> if the resource cannot be resolved.
      * </ul>
-     * 
+     *
      * If strict resource lifecycle is used, make sure you close the individual files after use.
      *
      * @return An array of <code>SmbResource</code> objects representing file
@@ -1230,16 +1232,16 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      * Wildcard expressions will not filter workgroup names or server names.
      *
      * <blockquote>
-     * 
+     *
      * <pre>
      * winnt&gt; ls c?o*
      * clock.avi                  -rw--      82944 Mon Oct 14 1996 1:38 AM
      * Cookies                    drw--          0 Fri Nov 13 1998 9:42 PM
      * 2 items in 5ms
      * </pre>
-     * 
+     *
      * </blockquote>
-     * 
+     *
      * If strict resource lifecycle is used, make sure you close the individual files after use.
      *
      * @param wildcard
@@ -1258,12 +1260,12 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      * List the contents of this SMB resource. The list returned will be
      * identical to the list returned by the parameterless <code>listFiles()</code>
      * method minus files filtered by the specified filename filter.
-     * 
+     *
      * If strict resource lifecycle is used, make sure you close the individual files after use.
      *
      * @param filter
      *            a filter to exclude files from the results
-     * @return An array of <tt>SmbResource</tt> objects
+     * @return An array of <code>SmbResource</code> objects
      * @throws SmbException
      */
     public SmbFile[] listFiles ( SmbFilenameFilter filter ) throws SmbException {
@@ -1275,12 +1277,12 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      * List the contents of this SMB resource. The list returned will be
      * identical to the list returned by the parameterless <code>listFiles()</code>
      * method minus filenames filtered by the specified filter.
-     * 
+     *
      * If strict resource lifecycle is used, make sure you close the individual files after use.
      *
      * @param filter
      *            a file filter to exclude files from the results
-     * @return An array of <tt>SmbResource</tt> objects
+     * @return An array of <code>SmbResource</code> objects
      * @throws SmbException
      */
     public SmbFile[] listFiles ( SmbFileFilter filter ) throws SmbException {
@@ -1389,7 +1391,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
 
     /**
-     * 
+     *
      */
     void clearAttributeCache () {
         this.attrExpiration = 0;
@@ -1972,7 +1974,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      * Returns a {@link java.net.URL} for this <code>SmbFile</code>. The
      * <code>URL</code> may be used as any other <code>URL</code> might to
      * access an SMB resource. Currently only retrieving data and information
-     * is supported (i.e. no <tt>doOutput</tt>).
+     * is supported (i.e. no <code>doOutput</code>).
      *
      * @deprecated Use getURL() instead
      * @return A new <code>{@link java.net.URL}</code> for this <code>SmbFile</code>
@@ -2014,12 +2016,12 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
      *
      * <p>
      * <blockquote>
-     * 
+     *
      * <pre>
      * smb://192.168.1.15/share/DIR/foo.txt
      * smb://angus/share/data/../dir/foo.txt
      * </pre>
-     * 
+     *
      * </blockquote>
      *
      * @param obj
@@ -2060,7 +2062,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
     /* URLConnection implementation */
     /**
-     * This URLConnection method just returns the result of <tt>length()</tt>.
+     * This URLConnection method just returns the result of <code>length()</code>.
      *
      * @return the length of this file or 0 if it refers to a directory
      */
@@ -2095,7 +2097,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
 
     /**
-     * This URLConnection method just returns the result of <tt>lastModified</tt>.
+     * This URLConnection method just returns the result of <code>lastModified</code>.
      *
      * @return the last modified data as milliseconds since Jan 1, 1970
      */
@@ -2112,7 +2114,7 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
 
     /**
-     * This URLConnection method just returns the result of <tt>lastModified</tt>.
+     * This URLConnection method just returns the result of <code>lastModified</code>.
      *
      * @return the last modified data as milliseconds since Jan 1, 1970
      */
@@ -2129,10 +2131,10 @@ public class SmbFile extends URLConnection implements SmbResource, SmbConstants 
 
 
     /**
-     * This URLConnection method just returns a new <tt>SmbFileInputStream</tt> created with this file.
+     * This URLConnection method just returns a new <code>SmbFileInputStream</code> created with this file.
      *
      * @throws IOException
-     *             thrown by <tt>SmbFileInputStream</tt> constructor
+     *             thrown by <code>SmbFileInputStream</code> constructor
      */
     @Override
     public InputStream getInputStream () throws IOException {

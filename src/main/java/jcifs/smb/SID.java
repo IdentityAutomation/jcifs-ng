@@ -1,17 +1,17 @@
 /* jcifs smb client library in Java
  * Copyright (C) 2006  "Michael B. Allen" <jcifs at samba dot org>
  *                     "Eric Glass" <jcifs at samba dot org>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -35,15 +35,15 @@ import jcifs.util.Hexdump;
 
 /**
  * Internal representation of SIDs
- * 
+ *
  * A Windows SID is a numeric identifier used to represent Windows
  * accounts. SIDs are commonly represented using a textual format such as
- * <tt>S-1-5-21-1496946806-2192648263-3843101252-1029</tt> but they may
+ * <code>S-1-5-21-1496946806-2192648263-3843101252-1029</code> but they may
  * also be resolved to yield the name of the associated Windows account
- * such as <tt>Administrators</tt> or <tt>MYDOM\alice</tt>.
+ * such as <code>Administrators</code> or <code>MYDOM\alice</code>.
  * <p>
- * Consider the following output of <tt>examples/SidLookup.java</tt>:
- * 
+ * Consider the following output of <code>examples/SidLookup.java</code>:
+ *
  * <pre>
  *        toString: S-1-5-21-4133388617-793952518-2001621813-512
  * toDisplayString: WNET\Domain Admins
@@ -52,8 +52,6 @@ import jcifs.util.Hexdump;
  *   getDomainName: WNET
  *  getAccountName: Domain Admins
  * </pre>
- * 
- * @internal
  */
 public class SID extends rpc.sid_t implements jcifs.SID {
 
@@ -64,7 +62,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
     };
 
     /**
-     * 
+     *
      */
     public static final int SID_FLAG_RESOLVE_SIDS = 0x0001;
 
@@ -97,7 +95,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
     /**
      * Convert a sid_t to byte array
-     * 
+     *
      * @param sid
      * @return byte encoded form
      */
@@ -125,7 +123,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
     /**
      * Construct a SID from it's binary representation.
      *
-     * 
+     *
      * @param src
      * @param si
      */
@@ -147,8 +145,8 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
     /**
      * Construct a SID from it's textual representation such as
-     * <tt>S-1-5-21-1496946806-2192648263-3843101252-1029</tt>.
-     * 
+     * <code>S-1-5-21-1496946806-2192648263-3843101252-1029</code>.
+     *
      * @param textual
      * @throws SmbException
      */
@@ -184,9 +182,9 @@ public class SID extends rpc.sid_t implements jcifs.SID {
     /**
      * Construct a SID from a domain SID and an RID
      * (relative identifier). For example, a domain SID
-     * <tt>S-1-5-21-1496946806-2192648263-3843101252</tt> and RID <tt>1029</tt> would
-     * yield the SID <tt>S-1-5-21-1496946806-2192648263-3843101252-1029</tt>.
-     * 
+     * <code>S-1-5-21-1496946806-2192648263-3843101252</code> and RID <code>1029</code> would
+     * yield the SID <code>S-1-5-21-1496946806-2192648263-3843101252-1029</code>.
+     *
      * @param domsid
      * @param rid
      */
@@ -205,7 +203,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
     /**
      * Construct a relative SID
-     * 
+     *
      * @param domsid
      * @param id
      */
@@ -225,7 +223,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
 
     /**
-     * 
+     *
      * @param sid
      * @param type
      * @param domainName
@@ -252,7 +250,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      *
      * @see jcifs.SID#unwrap(java.lang.Class)
@@ -268,7 +266,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
 
     /**
-     * 
+     *
      * @return encoded SID
      */
     public byte[] toByteArray () {
@@ -277,7 +275,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
 
     /**
-     * 
+     *
      * @return whether the SID is empty (no sub-authorities)
      */
     public boolean isEmpty () {
@@ -286,7 +284,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
 
     /**
-     * 
+     *
      * @return whether the SID is blank (all sub-authorities zero)
      */
     public boolean isBlank () {
@@ -298,7 +296,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
 
     /**
-     * 
+     *
      * @return domain SID
      */
     @Override
@@ -309,9 +307,9 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
     /**
      * Get the RID
-     * 
+     *
      * This is the last subauthority identifier
-     * 
+     *
      * @return the RID
      */
     @Override
@@ -400,7 +398,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
     /**
      * Return the numeric representation of this sid such as
-     * <tt>S-1-5-21-1496946806-2192648263-3843101252-1029</tt>.
+     * <code>S-1-5-21-1496946806-2192648263-3843101252-1029</code>.
      */
     @Override
     public String toString () {
@@ -461,7 +459,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
      * constructor, JCIFS will have no knowledge of the server that created the
      * SID and therefore cannot possibly resolve it automatically. In this case,
      * this method will be necessary.
-     * 
+     *
      * @param authorityServerName
      *            The FQDN of the server that is an authority for the SID.
      * @param tc
@@ -493,7 +491,7 @@ public class SID extends rpc.sid_t implements jcifs.SID {
 
     /**
      * Get members of the group represented by this SID, if it is one.
-     * 
+     *
      * @param authorityServerName
      * @param tc
      * @param flags

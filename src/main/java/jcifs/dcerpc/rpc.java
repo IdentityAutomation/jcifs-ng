@@ -1,7 +1,7 @@
 package jcifs.dcerpc;
 
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import jcifs.dcerpc.ndr.NdrBuffer;
 import jcifs.dcerpc.ndr.NdrException;

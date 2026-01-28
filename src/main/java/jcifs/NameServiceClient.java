@@ -1,16 +1,16 @@
 /*
  * © 2016 AgNO3 Gmbh & Co. KG
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -23,11 +23,10 @@ import java.net.UnknownHostException;
 
 
 /**
- * 
+ *
  * This is an internal API for resolving names
- * 
+ *
  * @author mbechler
- * @internal
  */
 public interface NameServiceClient {
 
@@ -102,7 +101,7 @@ public interface NameServiceClient {
 
     /**
      * Retrieve all addresses of a host by it's name.
-     * 
+     *
      * @param host
      *            hostname to lookup all addresses for
      * @param type
@@ -111,7 +110,7 @@ public interface NameServiceClient {
      *            the scope of the name
      * @param svr
      *            server to query
-     * 
+     *
      * @return the resolved addresses
      * @throws UnknownHostException
      */
@@ -127,7 +126,7 @@ public interface NameServiceClient {
      * still functional in other NetBIOS products and so for completeness it has been
      * implemented. A <code>scope</code> of <code>null</code> or <code>""</code>
      * signifies no scope.
-     * 
+     *
      * The additional <code>svr</code> parameter specifies the address to
      * query. This might be the address of a specific host, a name server,
      * or a broadcast address.
@@ -194,8 +193,8 @@ public interface NameServiceClient {
 
 
     /**
-     * Lookup addresses for the given <tt>hostname</tt>.
-     * 
+     * Lookup addresses for the given <code>hostname</code>.
+     *
      * @param hostname
      * @param possibleNTDomainOrWorkgroup
      * @return found addresses
@@ -205,13 +204,13 @@ public interface NameServiceClient {
 
 
     /**
-     * Lookup <tt>hostname</tt> and return it's <tt>UniAddress</tt>. If the
-     * <tt>possibleNTDomainOrWorkgroup</tt> parameter is <tt>true</tt> an
+     * Lookup <code>hostname</code> and return it's <code>UniAddress</code>. If the
+     * <code>possibleNTDomainOrWorkgroup</code> parameter is <code>true</code> an
      * additional name query will be performed to locate a master browser.
-     * 
+     *
      * @param hostname
      * @param possibleNTDomainOrWorkgroup
-     * 
+     *
      * @return the first resolved address
      * @throws UnknownHostException
      */

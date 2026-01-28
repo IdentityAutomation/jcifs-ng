@@ -1,15 +1,15 @@
 /*
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -48,25 +48,23 @@ import jcifs.util.Hexdump;
  * are "allowed". If all of the desired access bits are not "allowed"
  * the then same process is repeated for inherited ACEs.
  * <p>
- * For example, if user <tt>WNET\alice</tt> tries to open a file
- * with desired access bits <tt>0x00000003</tt> (<tt>FILE_READ_DATA |
- * FILE_WRITE_DATA</tt>) and the target file has the following security
+ * For example, if user <code>WNET\alice</code> tries to open a file
+ * with desired access bits <code>0x00000003</code> (<code>FILE_READ_DATA |
+ * FILE_WRITE_DATA</code>) and the target file has the following security
  * descriptor ACEs:
- * 
+ *
  * <pre>
  * Allow WNET\alice     0x001200A9  Direct
  * Allow Administrators 0x001F01FF  Inherited
  * Allow SYSTEM         0x001F01FF  Inherited
  * </pre>
- * 
+ *
  * the access check would fail because the direct ACE has an access mask
- * of <tt>0x001200A9</tt> which doesn't have the
- * <tt>FILE_WRITE_DATA</tt> bit on (bit <tt>0x00000002</tt>). Actually, this isn't quite correct. If
- * <tt>WNET\alice</tt> is in the local <tt>Administrators</tt> group the access check
- * will succeed because the inherited ACE allows local <tt>Administrators</tt>
- * both <tt>FILE_READ_DATA</tt> and <tt>FILE_WRITE_DATA</tt> access.
- * 
- * @internal
+ * of <code>0x001200A9</code> which doesn't have the
+ * <code>FILE_WRITE_DATA</code> bit on (bit <code>0x00000002</code>). Actually, this isn't quite correct. If
+ * <code>WNET\alice</code> is in the local <code>Administrators</code> group the access check
+ * will succeed because the inherited ACE allows local <code>Administrators</code>
+ * both <code>FILE_READ_DATA</code> and <code>FILE_WRITE_DATA</code> access.
  */
 public class ACE implements jcifs.ACE, Decodable {
 

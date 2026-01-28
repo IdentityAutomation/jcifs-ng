@@ -1,16 +1,16 @@
 /*
  * © 2017 AgNO3 Gmbh & Co. KG
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -27,7 +27,6 @@ import jcifs.SmbPipeHandle;
 
 /**
  * @author mbechler
- * @internal
  */
 public interface SmbPipeHandleInternal extends SmbPipeHandle {
 
@@ -45,7 +44,7 @@ public interface SmbPipeHandleInternal extends SmbPipeHandle {
 
 
     /**
-     * 
+     *
      * @return this pipe's input stream
      * @throws SmbException
      */
@@ -54,10 +53,9 @@ public interface SmbPipeHandleInternal extends SmbPipeHandle {
 
 
     /**
-     * 
+     *
      * @return this pipe's output stream
      * @throws SmbException
-     * @throws
      */
     @Override
     SmbPipeOutputStream getOutput () throws CIFSException;
@@ -82,7 +80,6 @@ public interface SmbPipeHandleInternal extends SmbPipeHandle {
      * @param buf
      * @param off
      * @param length
-     * @param direct
      * @return received bytes
      * @throws CIFSException
      * @throws IOException
@@ -94,7 +91,6 @@ public interface SmbPipeHandleInternal extends SmbPipeHandle {
      * @param buf
      * @param off
      * @param length
-     * @param direct
      * @throws IOException
      */
     void send ( byte[] buf, int off, int length ) throws IOException;

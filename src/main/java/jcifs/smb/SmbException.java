@@ -44,10 +44,10 @@ import jcifs.util.Hexdump;
 public class SmbException extends CIFSException implements NtStatus, DosError, WinError {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 484863569441792249L;
-    
+
     // to replace a bunch of one-off binary searches
     private static final Map<Integer, String> errorCodeMessages;
     private static final Map<Integer, String> winErrorCodeMessages;
@@ -68,7 +68,7 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
                 errorCodeMessagesTmp.put(DOS_ERROR_CODES[i][0], mappedNtMessage);
             }
         }
-        
+
         // for backward compatibility since this is was different message in the NtStatus.NT_STATUS_CODES than returned
         // by getMessageByCode
         errorCodeMessagesTmp.put(0, "NT_STATUS_SUCCESS");
@@ -90,10 +90,9 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
 
 
     /**
-     * 
+     *
      * @param errcode
      * @return message for NT STATUS code
-     * @internal
      */
     public static String getMessageByCode ( int errcode ) {
         String message = errorCodeMessages.get(errcode);
@@ -129,13 +128,13 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
 
 
     /**
-     * 
+     *
      */
     public SmbException () {}
 
 
     /**
-     * 
+     *
      * @param errcode
      * @param rootCause
      */
@@ -146,7 +145,7 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
 
 
     /**
-     * 
+     *
      * @param msg
      */
     public SmbException ( String msg ) {
@@ -156,7 +155,7 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
 
 
     /**
-     * 
+     *
      * @param msg
      * @param rootCause
      */
@@ -167,7 +166,7 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
 
 
     /**
-     * 
+     *
      * @param errcode
      * @param winerr
      */
@@ -178,7 +177,7 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
 
 
     /**
-     * 
+     *
      * @return status code
      */
     public int getNtStatus () {
@@ -187,7 +186,7 @@ public class SmbException extends CIFSException implements NtStatus, DosError, W
 
 
     /**
-     * 
+     *
      * @return cause
      */
     @Deprecated

@@ -26,13 +26,12 @@ import jcifs.util.Hexdump;
 
 
 /**
- * 
- * @internal
+ *
  */
 public final class NtlmChallenge implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 2484853610174848092L;
 

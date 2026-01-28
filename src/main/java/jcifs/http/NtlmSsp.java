@@ -24,8 +24,8 @@ package jcifs.http;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.bouncycastle.util.encoders.Base64;
 
@@ -38,8 +38,8 @@ import jcifs.smb.NtlmPasswordAuthentication;
 
 
 /**
- * This class is used internally by <tt>NtlmHttpFilter</tt>,
- * <tt>NtlmServlet</tt>, and <tt>NetworkExplorer</tt> to negotiate password
+ * This class is used internally by <code>NtlmHttpFilter</code>,
+ * <code>NtlmServlet</code>, and <code>NetworkExplorer</code> to negotiate password
  * hashes via NTLM SSP with MSIE. It might also be used directly by servlet
  * containers to incorporate similar functionality.
  * <p>
@@ -58,7 +58,7 @@ public class NtlmSsp implements NtlmFlags {
      * Calls the static {@link #authenticate(CIFSContext, HttpServletRequest,
      * HttpServletResponse, byte[])} method to perform NTLM authentication
      * for the specified servlet request.
-     * 
+     *
      * @param tc
      *
      * @param req
@@ -79,7 +79,7 @@ public class NtlmSsp implements NtlmFlags {
 
     /**
      * Performs NTLM authentication for the servlet request.
-     * 
+     *
      * @param tc
      *            context to use
      *

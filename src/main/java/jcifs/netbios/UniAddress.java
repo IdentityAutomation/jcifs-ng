@@ -41,7 +41,7 @@ import jcifs.CIFSContext;
  * jCIFS name resolution properties can greatly affect the behavior of
  * the client and may be necessary for proper operation.
  * <p>
- * This class should be used in favor of <tt>InetAddress</tt> to resolve
+ * This class should be used in favor of <code>InetAddress</code> to resolve
  * hostnames on LANs and WANs that support a mixture of NetBIOS/WINS and
  * DNS resolvable hosts.
  */
@@ -117,8 +117,8 @@ public class UniAddress implements Address {
 
 
     /**
-     * Create a <tt>UniAddress</tt> by wrapping an <tt>InetAddress</tt> or
-     * <tt>NbtAddress</tt>.
+     * Create a <code>UniAddress</code> by wrapping an <code>InetAddress</code> or
+     * <code>NbtAddress</code>.
      * 
      * @param addr
      *            wrapped address
@@ -142,8 +142,8 @@ public class UniAddress implements Address {
 
 
     /**
-     * Compare two addresses for equality. Two <tt>UniAddress</tt>s are equal
-     * if they are both <tt>UniAddress</tt>' and refer to the same IP address.
+     * Compare two addresses for equality. Two <code>UniAddress</code>s are equal
+     * if they are both <code>UniAddress</code>' and refer to the same IP address.
      */
     @Override
     public boolean equals ( Object obj ) {
@@ -153,7 +153,7 @@ public class UniAddress implements Address {
 
     /**
      * Guess first called name to try for session establishment. This
-     * method is used exclusively by the <tt>jcifs.smb</tt> package.
+     * method is used exclusively by the <code>jcifs.smb</code> package.
      * 
      * @return the guessed name
      */
@@ -186,7 +186,7 @@ public class UniAddress implements Address {
 
     /**
      * Guess next called name to try for session establishment. This
-     * method is used exclusively by the <tt>jcifs.smb</tt> package.
+     * method is used exclusively by the <code>jcifs.smb</code> package.
      * 
      * @param tc
      *            context to use
@@ -207,7 +207,7 @@ public class UniAddress implements Address {
 
 
     /**
-     * Return the underlying <tt>NbtAddress</tt> or <tt>InetAddress</tt>.
+     * Return the underlying <code>NbtAddress</code> or <code>InetAddress</code>.
      * 
      * @return wrapped address
      */
@@ -283,7 +283,7 @@ public class UniAddress implements Address {
 
     /**
      * Return the a text representation of this address such as
-     * <tt>MYCOMPUTER/192.168.1.15</tt>.
+     * <code>MYCOMPUTER/192.168.1.15</code>.
      */
     @Override
     public String toString () {

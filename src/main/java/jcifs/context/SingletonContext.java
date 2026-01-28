@@ -1,16 +1,16 @@
 /*
  * © 2016 AgNO3 Gmbh & Co. KG
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -32,7 +32,7 @@ import jcifs.config.PropertyConfiguration;
 
 /**
  * Global singleton context
- * 
+ *
  * @author mbechler
  *
  */
@@ -44,9 +44,9 @@ public class SingletonContext extends BaseContext implements CIFSContext {
 
     /**
      * Initialize singleton context using custom properties
-     * 
+     *
      * This method can only be called once.
-     * 
+     *
      * @param props
      * @throws CIFSException
      */
@@ -78,10 +78,10 @@ public class SingletonContext extends BaseContext implements CIFSContext {
 
     /**
      * Get singleton context
-     * 
+     *
      * The singleton context will use system properties for configuration as well as values specified in a file
-     * specified through this <tt>jcifs.properties</tt> system property.
-     * 
+     * specified through this <code>jcifs.properties</code> system property.
+     *
      * @return a global context, initialized on first call
      */
     public static synchronized final SingletonContext getInstance () {
@@ -100,11 +100,11 @@ public class SingletonContext extends BaseContext implements CIFSContext {
 
     /**
      * This static method registers the SMB URL protocol handler which is
-     * required to use SMB URLs with the <tt>java.net.URL</tt> class. If this
+     * required to use SMB URLs with the <code>java.net.URL</code> class. If this
      * method is not called before attempting to create an SMB URL with the
      * URL class the following exception will occur:
      * <blockquote>
-     * 
+     *
      * <pre>
      * Exception MalformedURLException: unknown protocol: smb
      *     at java.net.URL.&lt;init&gt;(URL.java:480)
@@ -113,9 +113,9 @@ public class SingletonContext extends BaseContext implements CIFSContext {
      *     at jcifs.smb.SmbFile.&lt;init&gt;(SmbFile.java:355)
      *     ...
      * </pre>
-     * 
-     * <blockquote>
-     * 
+     *
+     * </blockquote>
+     *
      */
     public static void registerSmbURLHandler () {
         SingletonContext.getInstance();
@@ -131,7 +131,7 @@ public class SingletonContext extends BaseContext implements CIFSContext {
 
 
     /**
-     * 
+     *
      */
     private SingletonContext ( Properties p ) throws CIFSException {
         super(new PropertyConfiguration(p));

@@ -1,15 +1,15 @@
 /*
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -19,10 +19,8 @@ package jcifs;
 
 /**
  * Utility class holding several protocol constrants
- * 
- * @author mbechler
  *
- * @internal
+ * @author mbechler
  */
 @SuppressWarnings ( "javadoc" )
 public interface SmbConstants {
@@ -156,28 +154,28 @@ public interface SmbConstants {
     static final int FOREVER = -1;
 
     /**
-     * When specified as the <tt>shareAccess</tt> constructor parameter,
+     * When specified as the <code>shareAccess</code> constructor parameter,
      * other SMB clients (including other threads making calls into jCIFS)
      * will not be permitted to access the target file and will receive "The
      * file is being accessed by another process" message.
      */
     static final int FILE_NO_SHARE = 0x00;
     /**
-     * When specified as the <tt>shareAccess</tt> constructor parameter,
+     * When specified as the <code>shareAccess</code> constructor parameter,
      * other SMB clients will be permitted to read from the target file while
      * this file is open. This constant may be logically OR'd with other share
      * access flags.
      */
     static final int FILE_SHARE_READ = 0x01;
     /**
-     * When specified as the <tt>shareAccess</tt> constructor parameter,
+     * When specified as the <code>shareAccess</code> constructor parameter,
      * other SMB clients will be permitted to write to the target file while
      * this file is open. This constant may be logically OR'd with other share
      * access flags.
      */
     static final int FILE_SHARE_WRITE = 0x02;
     /**
-     * When specified as the <tt>shareAccess</tt> constructor parameter,
+     * When specified as the <code>shareAccess</code> constructor parameter,
      * other SMB clients will be permitted to delete the target file while
      * this file is open. This constant may be logically OR'd with other share
      * access flags.
@@ -189,37 +187,37 @@ public interface SmbConstants {
     static final int DEFAULT_SHARING = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
 
     /**
-     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <tt>SmbFile</tt>
+     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <code>SmbFile</code>
      * represents is a regular file or directory.
      */
     static final int TYPE_FILESYSTEM = 0x01;
     /**
-     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <tt>SmbFile</tt>
+     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <code>SmbFile</code>
      * represents is a workgroup.
      */
     static final int TYPE_WORKGROUP = 0x02;
     /**
-     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <tt>SmbFile</tt>
+     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <code>SmbFile</code>
      * represents is a server.
      */
     static final int TYPE_SERVER = 0x04;
     /**
-     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <tt>SmbFile</tt>
+     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <code>SmbFile</code>
      * represents is a share.
      */
     static final int TYPE_SHARE = 0x08;
     /**
-     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <tt>SmbFile</tt>
+     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <code>SmbFile</code>
      * represents is a named pipe.
      */
     static final int TYPE_NAMED_PIPE = 0x10;
     /**
-     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <tt>SmbFile</tt>
+     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <code>SmbFile</code>
      * represents is a printer.
      */
     static final int TYPE_PRINTER = 0x20;
     /**
-     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <tt>SmbFile</tt>
+     * Returned by {@link jcifs.SmbResource#getType()} if the resource this <code>SmbFile</code>
      * represents is a communications device.
      */
     static final int TYPE_COMM = 0x40;

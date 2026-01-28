@@ -1,15 +1,15 @@
 /*
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -38,8 +38,7 @@ import jcifs.util.Hexdump;
 
 
 /**
- * 
- * @internal
+ *
  */
 public class SMB1SigningDigest implements SMBSigningDigest {
 
@@ -53,7 +52,7 @@ public class SMB1SigningDigest implements SMBSigningDigest {
 
 
     /**
-     * 
+     *
      * @param macSigningKey
      * @param bypass
      */
@@ -63,7 +62,7 @@ public class SMB1SigningDigest implements SMBSigningDigest {
 
 
     /**
-     * 
+     *
      * @param macSigningKey
      * @param bypass
      * @param initialSequence
@@ -87,7 +86,7 @@ public class SMB1SigningDigest implements SMBSigningDigest {
      * The MAC Key = concat(Session Key, Digest of Challenge);
      * Because of Kerberos Authentication don't have challenge,
      * The MAC Key = Session Key
-     * 
+     *
      * @param macSigningKey
      *            The MAC key used to sign or verify SMB.
      */
@@ -99,7 +98,7 @@ public class SMB1SigningDigest implements SMBSigningDigest {
 
     /**
      * Construct a digest with a non-zero starting sequence number
-     * 
+     *
      * @param macSigningKey
      * @param initialSequence
      */
@@ -111,7 +110,7 @@ public class SMB1SigningDigest implements SMBSigningDigest {
 
 
     /**
-     * 
+     *
      * @param transport
      * @param auth
      * @throws SmbException
@@ -153,7 +152,7 @@ public class SMB1SigningDigest implements SMBSigningDigest {
 
     /**
      * Update digest with data
-     * 
+     *
      * @param input
      * @param offset
      * @param len
@@ -234,7 +233,7 @@ public class SMB1SigningDigest implements SMBSigningDigest {
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      *
      * @see jcifs.internal.SMBSigningDigest#verify(byte[], int, int, int, jcifs.internal.CommonServerMessageBlock)
@@ -293,7 +292,7 @@ public class SMB1SigningDigest implements SMBSigningDigest {
 
 
     /**
-     * 
+     *
      * @param cfg
      * @param t
      * @param dst

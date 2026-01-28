@@ -28,15 +28,15 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.bouncycastle.util.encoders.Base64;
 import org.slf4j.Logger;
@@ -60,8 +60,8 @@ import jcifs.smb.SmbTransportInternal;
 
 /**
  * This servlet Filter can be used to negotiate password hashes with
- * MSIE clients using NTLM SSP. This is similar to <tt>Authentication:
- * BASIC</tt> but weakly encrypted and without requiring the user to re-supply
+ * MSIE clients using NTLM SSP. This is similar to <code>Authentication:
+ * BASIC</code> but weakly encrypted and without requiring the user to re-supply
  * authentication credentials.
  * <p>
  * Read <a href="../../../ntlmhttpauth.html">jCIFS NTLM HTTP Authentication and the Network Explorer Servlet</a> for
@@ -146,8 +146,8 @@ public class NtlmHttpFilter implements Filter {
 
 
     /**
-     * This method simply calls <tt>negotiate( req, resp, false )</tt>
-     * and then <tt>chain.doFilter</tt>. You can override and call
+     * This method simply calls <code>negotiate( req, resp, false )</code>
+     * and then <code>chain.doFilter</code>. You can override and call
      * negotiate manually to achive a variety of different behavior.
      */
     @Override

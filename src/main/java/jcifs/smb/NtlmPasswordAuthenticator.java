@@ -316,8 +316,8 @@ public class NtlmPasswordAuthenticator implements Principal, CredentialsInternal
 
 
     /**
-     * Returns the password in plain text or <tt>null</tt> if the raw password
-     * hashes were used to construct this <tt>NtlmPasswordAuthentication</tt>
+     * Returns the password in plain text or <code>null</code> if the raw password
+     * hashes were used to construct this <code>NtlmPasswordAuthentication</code>
      * object which will be the case when NTLM HTTP Authentication is
      * used. There is no way to retrieve a users password in plain text unless
      * it is supplied by the user at runtime.
@@ -331,7 +331,7 @@ public class NtlmPasswordAuthenticator implements Principal, CredentialsInternal
 
     /**
      * Return the domain and username in the format:
-     * <tt>domain\\username</tt>. This is equivalent to <tt>toString()</tt>.
+     * <code>domain\\username</code>. This is equivalent to <code>toString()</code>.
      */
     @Override
     public String getName () {
@@ -341,9 +341,9 @@ public class NtlmPasswordAuthenticator implements Principal, CredentialsInternal
 
 
     /**
-     * Compares two <tt>NtlmPasswordAuthentication</tt> objects for equality.
+     * Compares two <code>NtlmPasswordAuthentication</code> objects for equality.
      * 
-     * Two <tt>NtlmPasswordAuthentication</tt> objects are equal if their caseless domain and username fields are equal
+     * Two <code>NtlmPasswordAuthentication</code> objects are equal if their caseless domain and username fields are equal
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
@@ -371,7 +371,7 @@ public class NtlmPasswordAuthenticator implements Principal, CredentialsInternal
 
     /**
      * Return the domain and username in the format:
-     * <tt>domain\\username</tt>. This is equivalent to <tt>getName()</tt>.
+     * <code>domain\\username</code>. This is equivalent to <code>getName()</code>.
      */
     @Override
     public String toString () {

@@ -1,17 +1,17 @@
 /* jcifs smb client library in Java
  * Copyright (C) 2000  "Michael B. Allen" <jcifs at samba dot org>
  *                     "Paul Walker" <jcifs at samba dot org>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -55,47 +55,48 @@ import jcifs.internal.smb1.com.SmbComNTCreateAndXResponse;
  * is desired.
  *
  * <p>
- * <table border="1" cellpadding="3" cellspacing="0" width="100%" summary="Usage examples">
- * <tr bgcolor="#ccccff">
- * <td colspan="2"><b><code>SmbNamedPipe</code> Constructor Examples</b></td>
+ * <table style="border-spacing: 0px; width: 100%;" border="1">
+ * <caption>Usage examples</caption>
+ * <tr style="background-color: #ccccff">
+ * <td style="padding: 3px;" colspan="2"><b><code>SmbNamedPipe</code> Constructor Examples</b></td>
  * <tr>
- * <td width="20%"><b>Code Sample</b></td>
- * <td><b>Description</b></td>
+ * <td style="padding: 3px; width: 20%;"><b>Code Sample</b></td>
+ * <td style="padding: 3px;"><b>Description</b></td>
  * </tr>
  * <tr>
- * <td width="20%">
- * 
+ * <td style="padding: 3px; width: 20%;">
+ *
  * <pre>
  * new SmbNamedPipe("smb://server/IPC$/PIPE/foo", SmbNamedPipe.PIPE_TYPE_RDWR | SmbNamedPipe.PIPE_TYPE_CALL, context);
  * </pre>
- * 
+ *
  * </td>
- * <td>
+ * <td style="padding: 3px;">
  * Open the Named Pipe foo for reading and writing. The pipe will behave like the <code>CallNamedPipe</code> interface.
  * </td>
  * </tr>
  * <tr>
- * <td width="20%">
- * 
+ * <td style="padding: 3px; width: 20%;">
+ *
  * <pre>
  * new SmbNamedPipe("smb://server/IPC$/foo", SmbNamedPipe.PIPE_TYPE_RDWR | SmbNamedPipe.PIPE_TYPE_TRANSACT, context);
  * </pre>
- * 
+ *
  * </td>
- * <td>
+ * <td style="padding: 3px;">
  * Open the Named Pipe foo for reading and writing. The pipe will behave like the <code>TransactNamedPipe</code>
  * interface.
  * </td>
  * </tr>
  * <tr>
- * <td width="20%">
- * 
+ * <td style="padding: 3px; width: 20%;">
+ *
  * <pre>
  * new SmbNamedPipe("smb://server/IPC$/foo", SmbNamedPipe.PIPE_TYPE_RDWR, context);
  * </pre>
- * 
+ *
  * </td>
- * <td>
+ * <td style="padding: 3px;">
  * Open the Named Pipe foo for reading and writing. The pipe will
  * behave as though the <code>CreateFile</code>, <code>ReadFile</code>,
  * <code>WriteFile</code>, and <code>CloseFile</code> interface was
@@ -121,7 +122,7 @@ public class SmbNamedPipe extends SmbFile implements SmbPipeResource {
      * parameter. The pipeType parameter should be at least one of
      * the <code>PIPE_TYPE</code> flags combined with the bitwise OR
      * operator <code>|</code>. See the examples listed above.
-     * 
+     *
      * @param url
      * @param pipeType
      * @param unshared
@@ -146,7 +147,7 @@ public class SmbNamedPipe extends SmbFile implements SmbPipeResource {
      * parameter. The pipeType parameter should be at least one of
      * the <code>PIPE_TYPE</code> flags combined with the bitwise OR
      * operator <code>|</code>. See the examples listed above.
-     * 
+     *
      * @param url
      * @param pipeType
      * @param tc

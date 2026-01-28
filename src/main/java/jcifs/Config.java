@@ -1,16 +1,16 @@
 /* jcifs smb client library in Java
  * Copyright (C) 2000  "Michael B. Allen" <jcifs at samba dot org>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -32,15 +32,15 @@ import jcifs.context.SingletonContext;
 
 /**
  * This class now contains only utilities for config parsing.
- * 
+ *
  * We strongly suggest that you create an explicit {@link jcifs.context.CIFSContextWrapper}
  * with your desired config. It's base implementation {@link jcifs.context.BaseContext}
  * should be sufficient for most needs.
- * 
+ *
  * If you want to retain the classic singleton behavior you can use
  * {@link jcifs.context.SingletonContext#getInstance()}
  * witch is initialized using system properties.
- * 
+ *
  */
 @SuppressWarnings ( "javadoc" )
 public class Config {
@@ -50,11 +50,11 @@ public class Config {
 
     /**
      * This static method registers the SMB URL protocol handler which is
-     * required to use SMB URLs with the <tt>java.net.URL</tt> class. If this
+     * required to use SMB URLs with the <code>java.net.URL</code> class. If this
      * method is not called before attempting to create an SMB URL with the
      * URL class the following exception will occur:
      * <blockquote>
-     * 
+     *
      * <pre>
      * Exception MalformedURLException: unknown protocol: smb
      *     at java.net.URL.&lt;init&gt;(URL.java:480)
@@ -63,8 +63,8 @@ public class Config {
      *     at jcifs.smb.SmbFile.&lt;init&gt;(SmbFile.java:355)
      *     ...
      * </pre>
-     * 
-     * <blockquote>
+     *
+     * </blockquote>
      */
     public static void registerSmbURLHandler () {
         SingletonContext.registerSmbURLHandler();
@@ -175,8 +175,8 @@ public class Config {
 
 
     /**
-     * Retrieve an array of <tt>InetAddress</tt> created from a property
-     * value containing a <tt>delim</tt> separated list of host names and/or
+     * Retrieve an array of <code>InetAddress</code> created from a property
+     * value containing a <code>delim</code> separated list of host names and/or
      * ip addresses.
      */
     public static InetAddress[] getInetAddressArray ( Properties props, String key, String delim, InetAddress[] def ) {
