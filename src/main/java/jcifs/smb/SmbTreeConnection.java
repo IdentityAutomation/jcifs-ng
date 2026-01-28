@@ -407,8 +407,8 @@ class SmbTreeConnection {
                 if ( dre.getData().unwrap(DfsReferralDataInternal.class).isResolveHashes() ) {
                     throw dre;
                 }
+                log.debug("Have referral (send0) {}", (Object)dre);
                 request.reset();
-                log.trace("send0", dre);
             }
         }
 
@@ -551,7 +551,6 @@ class SmbTreeConnection {
                           SmbTreeImpl ct = connectTree(loc, host, share, trans, uct, dr) ) {
 
                         if ( dr != null ) {
-                            ct.setTreeReferral(dr);
                             if ( dr != start ) {
                                 dr.unwrap(DfsReferralDataInternal.class).replaceCache();
                             }
@@ -567,7 +566,6 @@ class SmbTreeConnection {
                       SmbTreeImpl uct = smbSession.getSmbTree(share, null).unwrap(SmbTreeImpl.class);
                       SmbTreeImpl ct = connectTree(loc, host, share, trans, uct, dr) ) {
                     if ( dr != null ) {
-                        ct.setTreeReferral(dr);
                         if ( dr != start ) {
                             dr.unwrap(DfsReferralDataInternal.class).replaceCache();
                         }
@@ -708,28 +706,10 @@ class SmbTreeConnection {
 
             String rpath = request != null ? request.getPath() : loc.getUNCPath();
             String rfullpath = request != null ? request.getFullUNCPath() : ( '\\' + loc.getServer() + '\\' + loc.getShare() + loc.getUNCPath() );
-            if ( t.isInDomainDfs() || !t.isPossiblyDfs() ) {
-                if ( t.isInDomainDfs() ) {
-                    // need to adjust request path
-                    DfsReferralData dr = t.getTreeReferral();
-                    if ( dr != null ) {
-                        if ( log.isDebugEnabled() ) {
-                            log.debug(String.format("Need to adjust request path %s (full: %s) -> %s", rpath, rfullpath, dr));
-                        }
-                        String dunc = loc.handleDFSReferral(dr, rpath);
-                        if ( request != null ) {
-                            request.setPath(dunc);
-                        }
-                        return loc;
-                    }
 
-                    // fallthrough to normal handling
-                    log.debug("No tree referral but in DFS");
-                }
-                else {
-                    log.trace("Not in DFS");
-                    return loc;
-                }
+            if ( ! t.isPossiblyDfs() && ! t.isInDomainDfs() ) {
+                log.trace("Not in DFS");
+                return loc;
             }
 
             if ( request != null ) {
@@ -745,6 +725,8 @@ class SmbTreeConnection {
 
                 String dunc = loc.handleDFSReferral(dr, rpath);
                 if ( request != null ) {
+                    String refullpath = '\\' + dr.getServer() + '\\' + loc.getShare() + loc.getUNCPath();
+                    request.setFullUNCPath(dr.getDomain(), dr.getServer(), refullpath);
                     request.setPath(dunc);
                 }
 
@@ -777,7 +759,7 @@ class SmbTreeConnection {
                 if ( log.isDebugEnabled() ) {
                     log.debug("No referral available for  " + rfullpath);
                 }
-                throw new CIFSException("No referral but in domain DFS " + rfullpath);
+                return loc;
             }
             else {
                 log.trace("Not in DFS");
